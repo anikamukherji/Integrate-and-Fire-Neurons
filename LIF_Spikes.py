@@ -32,7 +32,7 @@ for i, t in enumerate(times):
 plt.figure(1)
 plt.plot(times, Vm)
 plt.plot(times, inputarray)
-plt.title("Leaky Integrate and Fire Neuron Without Spikes")
+plt.title("Leaky Integrate and Fire Neuron With Spikes")
 plt.xlabel("Time (ms)")
 plt.ylabel("Membrane Voltage (mV)")
 plt.ylim(0, 6)
