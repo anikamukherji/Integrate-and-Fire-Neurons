@@ -5,24 +5,24 @@ import numpy as np
 # membrane voltage = 0 represents resting membrane potential
 
 
-T = 40                              # total simulation time
-dt = 0.125                          # time step
-Rm = 1                              # resistance
-Cm = 10                             # capacitance
+T = 100                             # total simulation time (ms)
+dt = 0.125                          # time step (ms)
+Rm = 100                            # resistance (megaOhm)
+Cm = 1                              # capacitance (microFaraday/cm^2)
 tau_m = Rm * Cm                     # time membrane constant
 times = np.arange(0, T+dt, dt)      # time step array
 inputCurrentStart = 0
-inputCurrentEnd = 13
+inputCurrentEnd = 40
 inputCurrentLen = (inputCurrentEnd - inputCurrentStart) / dt
-current = 70
+current = 1                         # input current (nanoAmpere)
 inputarray = np.zeros(len(times))
 inputarray[inputCurrentStart:inputCurrentLen] = current
 
 Vm = [0]*(len(times))
-tau_r = 1.5                         # refractory period
+tau_r = 1.5                         # refractory period (ms)
 t_rest = 0                          # initial refractory time
-Vt = 30                             # spike threshold
-V_spike = 110                       # spike delta
+Vt = 30                             # spike threshold (mV)
+V_spike = 110                       # spike delta (mV)
 Vh = -20                            # hyperpolarized state
 
 for i, t in enumerate(times):
