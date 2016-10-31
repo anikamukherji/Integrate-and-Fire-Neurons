@@ -32,16 +32,16 @@ for t, i in enumerate(inputs):
     n[t].I = TimedArray([0 * namp, i * namp, i * namp, 0 * namp],
                         dt=500 * msecond)
 
-for i in range(11):
-    print "current =", n[i].I, "neuron #=", i
+# for i in range(11):
+#     print "current =", n[i].I, "neuron #=", i
 
 M = StateMonitor(n, 'v', record=True)
 S = SpikeMonitor(n)
 
 run(2 * second)
 
-print("Neuron 0 Vms = ", M[0])
-print("Neuron 0 I*Rm = ", n[0].I * Rm)
+# print("Neuron 0 Vms = ", M[0])
+# print("Neuron 0 I*Rm = ", n[0].I * Rm)
 M.insert_spikes(S)
 
 plot(M.times, M[0])
@@ -56,7 +56,7 @@ plot(M.times, M[8])
 plot(M.times, M[9])
 plot(M.times, M[10])
 
-print S.nspikes
+# print S.nspikes
 
 ylim(-0.15, 0.04)
 xlabel("Time")
