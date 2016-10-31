@@ -13,13 +13,13 @@ def drange(start, stop, step):
 Vt = -40 * mV
 Vm = -75 * mV
 Vr = -45 * mV
-Rm = 7 * Mohm
-Cm = 1 * ufarad
+Rm = 36 * Mohm
+Cm = .01 * ufarad
 
 tau_m = (Rm * Cm)
 
 inputs = list(drange(-1.0, 1.2, 0.2))
-n = NeuronGroup(N=11, model='''dv/dt=((-1*v) + I*Rm)/tau_m : mV
+n = NeuronGroup(N=11, model='''dv/dt=((Vm - v) + I*Rm)/tau_m : mV
                                 I : namp
                             ''',
                 threshold=Vt, reset=Vr,
@@ -37,9 +37,10 @@ for i in range(11):
 M = StateMonitor(n, 'v', record=True)
 S = SpikeMonitor(n)
 
-run(10 * second)
+run(2 * second)
 
-print(M[0])
+print("Neuron 0 Vms = ", M[0])
+print("Neuron 0 I*Rm = ", n[0].I * Rm)
 
 plot(M.times, M[0])
 plot(M.times, M[1])
@@ -57,10 +58,10 @@ print S.nspikes
 
 M.insert_spikes(S)
 
-ylim(-0.1, 0)
+ylim(-0.11, 0)
 xlabel("Time")
 ylabel("Membrane Potential")
 show()
 
-raster_plot(S)
-show()
+# raster_plot(S)
+# show()
