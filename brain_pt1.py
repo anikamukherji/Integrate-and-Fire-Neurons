@@ -29,7 +29,8 @@ n.v = Vm
 for t, i in enumerate(inputs):
 
     index = int(t)
-    n[t].I = i * namp
+    n[t].I = TimedArray([0 * namp, i * namp, i * namp, 0 * namp],
+                        dt=500 * msecond)
 
 for i in range(11):
     print "current =", n[i].I, "neuron #=", i
