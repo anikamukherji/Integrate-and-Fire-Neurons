@@ -14,7 +14,7 @@ Vt = -40 * mV
 Vm = -75 * mV
 Vr = -45 * mV
 Rm = 36 * Mohm
-Cm = .01 * ufarad
+Cm = .001 * ufarad
 
 tau_m = (Rm * Cm)
 
@@ -23,7 +23,7 @@ n = NeuronGroup(N=11, model='''dv/dt=((Vm - v) + I*Rm)/tau_m : mV
                                 I : namp
                             ''',
                 threshold=Vt, reset=Vr,
-                refractory=0.5 * msecond)
+                refractory=1 * msecond)
 n.v = Vm
 
 for t, i in enumerate(inputs):
@@ -41,6 +41,7 @@ run(2 * second)
 
 print("Neuron 0 Vms = ", M[0])
 print("Neuron 0 I*Rm = ", n[0].I * Rm)
+M.insert_spikes(S)
 
 plot(M.times, M[0])
 plot(M.times, M[1])
@@ -56,12 +57,8 @@ plot(M.times, M[10])
 
 print S.nspikes
 
-M.insert_spikes(S)
-
-ylim(-0.11, 0)
+ylim(-0.15, 0.04)
 xlabel("Time")
 ylabel("Membrane Potential")
 show()
 
-# raster_plot(S)
-# show()
