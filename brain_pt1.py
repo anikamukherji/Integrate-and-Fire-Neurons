@@ -2,14 +2,6 @@ from brian import *
 import numpy as np
 
 
-
-def drange(start, stop, step):
-    r = start
-    while r < stop:
-        yield r
-        r += step
-
-
 Vt = -40 * mV
 Vm = -75 * mV
 Vr = -45 * mV
@@ -62,4 +54,3 @@ ylim(-0.15, 0.04)
 xlabel("Time")
 ylabel("Membrane Potential")
 show()
-
