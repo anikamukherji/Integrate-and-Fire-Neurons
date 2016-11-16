@@ -56,7 +56,6 @@ S_w_f = StateMonitor(G, 'w_f', record=True)
 S_P = SpikeMonitor(P)
 
 run(100*ms)
-
 # print(0.005*volt + S_w_f.w_f)
 
 # plot lots of things

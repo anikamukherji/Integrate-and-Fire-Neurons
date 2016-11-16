@@ -46,7 +46,7 @@ G.d_max = -0.005*volt
 S = Synapses(P, G, on_pre=''' v_post += (epsp0 + w_d)
                             w_d += (d_max - w_d)/2
                             ''')
-S.connect(i=0,j=0)
+S.connect()
 
 # record spikes & MP
 
