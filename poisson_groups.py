@@ -4,7 +4,7 @@ poisson_input = PoissonGroup(25, rates='25 + 25*sin(pi*(t*6))')
 spike_mon = SpikeMonitor(poisson_input)
 mon = PopulationRateMonitor(poisson_input)
 state_mon = StateMonitor(poisson_input, 'rates', record=True)
-run(1*second)
+run(2*second)
 
 print(state_mon.rates[0])
 print(state_mon.t)
