@@ -1,6 +1,6 @@
 from brian2 import *
 
-poisson_input = PoissonGroup(25, rates='25 + 25*sin(pi*(t*6))')
+poisson_input = PoissonGroup(25, rates='25*sin(2*pi*(t*3))')
 spike_mon = SpikeMonitor(poisson_input)
 mon = PopulationRateMonitor(poisson_input)
 state_mon = StateMonitor(poisson_input, 'rates', record=True)
