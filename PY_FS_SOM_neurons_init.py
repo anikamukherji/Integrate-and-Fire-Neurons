@@ -49,7 +49,7 @@ def connect_synapse(synapse):
 
 # !!!!!PLOT THINGS!!!!!!
 def plot_input_with_3_groups(input_mon, mon_1, spikes_1, mon_2, spikes_2, 
-        mon_3, spikes_3, title, y_label_1, y_label_2, y_label_3):
+        mon_3, spikes_3, title, y_label_1, y_label_2, y_label_3, ymin, ymax):
     '''
     Make 4 subplots organized vertically
     TOP = raster plot of input group spikes
@@ -67,18 +67,18 @@ def plot_input_with_3_groups(input_mon, mon_1, spikes_1, mon_2, spikes_2,
     axPY.plot(mon_1.t/ms, mon_1.v[0], 'g')
     axPY.set_ylabel(y_label_1)
     axPY.vlines(spikes_1.t/ms, -0.040, 0, 'gray', lw=3)
-    axPY.set_ylim([-0.09, -0.04])
+    axPY.set_ylim([ymin, ymax])
 
     axFS.set_ylabel(y_label_2)
     axFS.plot(mon_2.t/ms, mon_2.v[0], 'b')
     axFS.vlines(spikes_2.t/ms, -0.040, 0, 'gray', lw=3)
-    axFS.set_ylim([-0.09, -0.04])
+    axFS.set_ylim([ymin, ymax])
 
     axSOM.plot(mon_3.t/ms, mon_3.v[0], 'purple')
     axSOM.vlines(spikes_3.t/ms, -0.040, 0, 'gray', lw=3)
     axSOM.set_xlabel("Time (s)")
     axSOM.set_ylabel(y_label_3)
-    axSOM.set_ylim([-0.09, -0.04])
+    axSOM.set_ylim([ymin, ymax])
 
     f.subplots_adjust(hspace=0.1)
     plt.show()
@@ -134,12 +134,12 @@ PY_group = make_neuron_group(20, 'v>-0.045*volt', 'v=-0.05*volt',
 # initializing PY group variables
 PY_group.v = -0.08*volt
 PY_group.Vm = -0.08*volt
-PY_group.tau_m = 0.02*second
+PY_group.tau_m = 0.03*second
 PY_group.epsp0 = 0.005*volt
 PY_group.epsp = 0.005*volt
-PY_group.tau_d = 0.04*second
+PY_group.tau_d = 7.4*second
 PY_group.D = 1
-PY_group.d_rate = 0.45
+PY_group.d_rate = 0.85
 
 # FS Neuron Group
 FS_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt',
@@ -148,12 +148,12 @@ FS_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt',
 # initializing FS group variables
 FS_group.v = -0.065*volt
 FS_group.Vm = -0.065*volt
-FS_group.tau_m = 0.01*second
+FS_group.tau_m = 0.02*second
 FS_group.epsp0 = 0.007*volt
 FS_group.epsp = 0.007*volt
-FS_group.d_rate = 0.25
+FS_group.d_rate = 0.35
 FS_group.D = 1
-FS_group.tau_d = 0.02*second
+FS_group.tau_d = 0.58*second
 
 # SOM Neuron Group
 SOM_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.005*second, 'linear')
@@ -164,7 +164,7 @@ SOM_group.Vm = -0.065*volt
 SOM_group.tau_m = 0.02*second
 SOM_group.epsp0 = 0.0005*volt
 SOM_group.epsp = 0.0005*volt
-SOM_group.tau_f = 0.01*second
+SOM_group.tau_f = 0.02*second
 SOM_group.F = 1
 SOM_group.f_rate = 0.5
 

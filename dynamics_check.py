@@ -35,12 +35,14 @@ mon_SOM = StateMonitor(SOM_group, 'epsp', record=True)
 mon_vPY = StateMonitor(PY_group, 'v', record=True)
 mon_vFS = StateMonitor(FS_group, 'v', record=True)
 mon_vSOM = StateMonitor(SOM_group, 'v', record=True)
+mon_DPY = StateMonitor(PY_group, 'D', record=True)
 spikes_PY = SpikeMonitor(PY_group)
 spikes_FS = SpikeMonitor(FS_group)
 spikes_SOM = SpikeMonitor(SOM_group)
 
 run(1*second)
 
+# print(mon_DPY.D[0])
 plot_input_with_3_groups(mon_gen_input, mon_vPY, spikes_PY, mon_vFS,
         spikes_FS, mon_vSOM, spikes_SOM, "Membrane Potential", 
-        "PY MP (v)", "FS MP (v)", "SOM MP (v)")
+        "PY MP (v)", "FS MP (v)", "SOM MP (v)", -0.083, -0.05)
