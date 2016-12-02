@@ -53,8 +53,7 @@ def plot_input_with_3_groups(input_mon, mon_1, spikes_1, mon_2, spikes_2,
     '''
     Make 4 subplots organized vertically
     TOP = raster plot of input group spikes
-    BOTTOM 3 = plots of whatever variable you choose to monitor through
-    mon_1/2/3
+    BOTTOM 3 = plots of membrane potential 
     spikes are inserted via gray bars and are recorded with spikemonitors =
     spikes_1/2/3
     '''
@@ -68,18 +67,18 @@ def plot_input_with_3_groups(input_mon, mon_1, spikes_1, mon_2, spikes_2,
     axPY.plot(mon_1.t/ms, mon_1.v[0], 'g')
     axPY.set_ylabel(y_label_1)
     axPY.vlines(spikes_1.t/ms, -0.040, 0, 'gray', lw=3)
-    axPY.set_ylim([-0.09, 0.01])
+    axPY.set_ylim([-0.09, -0.04])
 
     axFS.set_ylabel(y_label_2)
     axFS.plot(mon_2.t/ms, mon_2.v[0], 'b')
     axFS.vlines(spikes_2.t/ms, -0.040, 0, 'gray', lw=3)
-    axFS.set_ylim([-0.09, 0.01])
+    axFS.set_ylim([-0.09, -0.04])
 
     axSOM.plot(mon_3.t/ms, mon_3.v[0], 'purple')
     axSOM.vlines(spikes_3.t/ms, -0.040, 0, 'gray', lw=3)
     axSOM.set_xlabel("Time (s)")
     axSOM.set_ylabel(y_label_3)
-    axSOM.set_ylim([-0.09, 0.01])
+    axSOM.set_ylim([-0.09, -0.04])
 
     f.subplots_adjust(hspace=0.1)
     plt.show()
@@ -110,24 +109,23 @@ def visualise_connectivity(S):
 
 
 
-# facilitating weights are additive so f_rate is in volts
-# depressing weights are multiplicative so d_rate is unit-less
+# facilitating weights are additive 
+# depressing weights are multiplicative
 # membrane potential & synaptic weights decay exponentially
 eqs = '''
     dv/dt = (Vm - v)/tau_m : volt (unless refractory)
     Vm : volt
     tau_m : second
     epsp0 : volt
+    epsp : volt
 
-    dw_d/dt = (-w_d)/tau_d : volt 
+    dD/dt = (1-D)/tau_d : 1 
+    dF/dt = (1-F)/tau_f : 1
+    tau_f : second
     tau_d : second
     d_rate : 1
-
-    dw_f/dt = (-w_f)/tau_f : volt 
-    tau_f : second
-    f_rate : volt       
+    f_rate : 1 
    '''
-
 
 # PY Neuron Group
 PY_group = make_neuron_group(20, 'v>-0.045*volt', 'v=-0.05*volt',
@@ -138,9 +136,10 @@ PY_group.v = -0.08*volt
 PY_group.Vm = -0.08*volt
 PY_group.tau_m = 0.02*second
 PY_group.epsp0 = 0.005*volt
-PY_group.w_d = 0.00*volt
-PY_group.tau_d = 0.006*second
-PY_group.d_rate = 0.75
+PY_group.epsp = 0.005*volt
+PY_group.tau_d = 0.04*second
+PY_group.D = 1
+PY_group.d_rate = 0.45
 
 # FS Neuron Group
 FS_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt',
@@ -149,11 +148,12 @@ FS_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt',
 # initializing FS group variables
 FS_group.v = -0.065*volt
 FS_group.Vm = -0.065*volt
-FS_group.tau_m = 0.0075*second
+FS_group.tau_m = 0.01*second
 FS_group.epsp0 = 0.007*volt
-FS_group.w_d = 0.00*volt
-FS_group.tau_d = 0.003*second
-FS_group.d_rate = 0.65
+FS_group.epsp = 0.007*volt
+FS_group.d_rate = 0.25
+FS_group.D = 1
+FS_group.tau_d = 0.02*second
 
 # SOM Neuron Group
 SOM_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.005*second, 'linear')
@@ -163,8 +163,9 @@ SOM_group.v = -0.065*volt
 SOM_group.Vm = -0.065*volt
 SOM_group.tau_m = 0.02*second
 SOM_group.epsp0 = 0.0005*volt
-SOM_group.w_f = 0.00*volt
-SOM_group.tau_f = 0.005*second
-SOM_group.f_rate = 0.001*volt
+SOM_group.epsp = 0.0005*volt
+SOM_group.tau_f = 0.01*second
+SOM_group.F = 1
+SOM_group.f_rate = 0.5
 
 

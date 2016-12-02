@@ -6,18 +6,18 @@ poisson_input = make_poisson_input(20, '20*sin(t*(2*pi)*3/second)*Hz')
 # create synapses between poisson input group and the others
 
 S_P_PY = make_synapse(poisson_input, PY_group, '''
-                                                v_post += (epsp0 - w_d) 
-                                                w_d *= d_rate
+                                                v_post += epsp
+                                                epsp *= d_rate
                                                 ''')
 
 S_P_FS = make_synapse(poisson_input, FS_group,  '''
-                                                v_post += (epsp0 - w_d)
-                                                w_d *= d_rate
+                                                v_post += epsp
+                                                epsp *= d_rate
                                                 ''')
 
 S_P_SOM = make_synapse(poisson_input, SOM_group, '''
-                                                v_post += (epsp0 + w_f)
-                                                w_f += f_rate                                                                                           ''')
+                                                v_post += epsp
+                                                epsp += f_rate                                                                                           ''')
 
 connect_synapse(S_P_PY)
 connect_synapse(S_P_FS)
