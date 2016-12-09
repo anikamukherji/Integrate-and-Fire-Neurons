@@ -32,11 +32,17 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
 def run_simulation(network, time) -> dict:
 
     network.restore("initial")
+    net_objects = network.objects
 
     # Run simulation for time according to params from the dict
 
     network.run(time)
 
+    net_objects = network.objects
+    # index 5 of objects stores SOM F monitor
+    # index 4 stores FS D monitor
+    # index 3 stores PY D monitor
+    
     # Return dict = 
     PY_vals = network.PY_D_mon.D[0]*network.PY_g.epsp0[0]
     FS_vals = network.FS_D_mon.D[0]*network.FS_g.epsp0[0]
