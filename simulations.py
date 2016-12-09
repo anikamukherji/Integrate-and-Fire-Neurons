@@ -11,8 +11,8 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
     # take in a bunch of parameters 
     # take in N for num of simulations
     # format each parameter to match num of simulations
-    for i_sim in range(1, 2):
-        print(i_sim)
+    for i_sim in range(1, N+1):
+        print("Sim # ", i_sim)
         # build a dictionary for the parameter set for that run
         param_dict = {"input_frequency":input_frequency[i_sim], "n_input":n_input[i_sim],
                 "n_PY":n_PY[i_sim], "n_FS":n_FS[i_sim], "n_SOM":n_SOM[i_sim], 
@@ -23,19 +23,57 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
                 "SOM_f":SOM_f[i_sim], "PY_tau_d":PY_tau_d[i_sim], "FS_tau_d":FS_tau_d[i_sim],
                 "SOM_tau_f":SOM_tau_d[i_sim]}
         # call run_simulation
-        sim_dict = run_simulation(param_dict, time)
+        net = init_net(param_dict, time)
+        sim_dict = run_simulation(net, time)
         # print(param_dict)
         # save return argument somewhere
         ret[i_sim] = sim_dict
 
-def run_simulation(arg_dict, time) -> dict:
+def run_simulation(network, time) -> dict:
 
+    network.restore("initial")
+
+    # Run simulation for time according to params from the dict
+
+    network.run(time)
+
+    # Return dict = 
+    PY_vals = network.PY_D_mon.D[0]*network.PY_g.epsp0[0]
+    FS_vals = network.FS_D_mon.D[0]*network.FS_g.epsp0[0]
+    SOM_vals = network.SOM_F_mon.F[0]*network.SOM_g.epsp0[0]
+    # print(PY_vals)
+    # print(FS_vals)
+    # print(SOM_vals)
+    PY_arr = [0]*len(network.spike_monitor.t[:])
+    FS_arr = [0]*len(network.spike_monitor.t[:])
+    SOM_arr = [0]*len(network.spike_monitor.t[:])
+
+    for i in range(len(network.spike_monitor.t[:])):
+        spike_t = network.spike_monitor.t[i]
+        PY_arr[i] = PY_vals[spike_t/(0.1*msecond)]
+        FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]
+        SOM_arr[i] = SOM_vals[spike_t/(0.1*msecond)]
+
+    epsp_dict = {"PY_EPSP":PY_vals, "FS_EPSP":FS_vals, "SOM_EPSP":SOM_vals}
+    pulses = np.arange(1, len(network.spike_monitor.t[:])+1)
+    epsp_dict["pulse_num"]=pulses
+    print("dict for this sim= ", epsp_dict)
+
+    return epsp_dict
+
+def init_net(arg_dict, time):
+    
+    sim_net = Network()
     input_g = make_spike_generator(arg_dict["n_input"], np.arange(0*second, time, 1/arg_dict["input_frequency"]*second))  
     # poisson_g = make_input_g(arg_dict["n_input"], arg_dict["input_frequency"])
     PY_g = make_neuron_group(arg_dict["n_PY"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
     FS_g = make_neuron_group(arg_dict["n_FS"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
     SOM_g = make_neuron_group(arg_dict["n_SOM"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
-    print(arg_dict)
+    sim_net.add(input_g)
+    sim_net.add(PY_g)
+    sim_net.add(FS_g)
+    sim_net.add(SOM_g)
+    print("Dict for current simulation = ", arg_dict)
     # initialize lots of vars for simulation
     PY_g.v = arg_dict["PY_Vm"]*volt 
     PY_g.Vm = arg_dict["PY_Vm"]*volt
@@ -85,36 +123,21 @@ def run_simulation(arg_dict, time) -> dict:
     connect_synapse(syn_PY)
     connect_synapse(syn_FS)
     connect_synapse(syn_SOM)
+    
+    sim_net.add(syn_PY)
+    sim_net.add(syn_FS)
+    sim_net.add(syn_SOM)
 
-    # make some monitors
     spike_monitor = SpikeMonitor(input_g)
     PY_D_mon = StateMonitor(PY_g, 'D', record=True)
     FS_D_mon = StateMonitor(FS_g, 'D', record=True)
     SOM_F_mon = StateMonitor(SOM_g, 'F', record=True)
-    # Run simulation for time according to params from the dict
-    run(time)
-    # Return dict = 
-    PY_vals = PY_D_mon.D*PY.epsp0
-    FS_vals = FS_D_mon.D*FS.epsp0
-    SOM_vals = SOM_F_mon.F*SOM.epsp0
-    print(PY_vals)
-    print(FS_vals)
-    print(SOM_vals)
-    PY_arr = [0]*len(spike_monitor.t[:])
-    FS_arr = [0]*len(spike_monitor.t[:])
-    SOM_arr = [0]*len(spike_monitor.t[:])
-    print(PY_arr)
-    print(FS_arr)
-    print(SOM_arr)
-    for i in range(len(spike_monitor.t[:])):
-        spike_t = spike_monitor.t[i]
-        PY_arr[i] = PY_vals[spike_t/0.1]
-        FS_arr[i] = FS_vals[spike_t/0.1]
-        SOM_arr[i] = SOM_vals[spike_t/0.1]
 
-    epsp_dict = {"PY_EPSP":PY_vals, "FS_EPSP":FS_vals, "SOM_EPSP":SOM_vals}
-    pulses = np.arange(1, len(spike_monitor.t[:])+1)
-    epsp_dict["pulse_num"]=pulses
-    print(epsp_dict)
+    sim_net.add(spike_monitor)
+    sim_net.add(PY_D_mon)
+    sim_net.add(FS_D_mon)
+    sim_net.add(SOM_F_mon)
 
-    return epsp_dict
+    sim_net.store("initial")
+    return sim_net
+
