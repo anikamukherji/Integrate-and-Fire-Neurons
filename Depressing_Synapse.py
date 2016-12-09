@@ -16,7 +16,7 @@ f_max : volt
 d_max : volt
 '''
 
-P = PoissonGroup(1, 2000*Hz)
+P = PoissonGroup(100, rates='20+20*sin(t*pi*6))
 G = NeuronGroup(1, eqs, threshold='v>-0.04*volt', reset='v=-0.045*volt',
                 refractory=0.001*second, method='linear')
 

@@ -1,8 +1,8 @@
 from brian2 import *
 from PY_FS_SOM_neurons_init import *
 
-spikes = make_spike_generator(1, np.arange(0.01, 1, 0.01)*second)
-# spikes = make_spike_generator(1, np.arange(0.01, 1, 0.3)*second)
+# spikes = make_spike_generator(1, np.arange(0.01, 1, 0.01)*second)
+spikes = make_spike_generator(1, np.arange(0.01, 1, 0.3)*second)
 
 # create synapses between spike generator groups and the neurons
 
@@ -40,7 +40,7 @@ spikes_PY = SpikeMonitor(PY_group)
 spikes_FS = SpikeMonitor(FS_group)
 spikes_SOM = SpikeMonitor(SOM_group)
 
-run(1*second)
+run(.5*second)
 
 # print(mon_DPY.D[0])
 plot_input_with_3_groups(mon_gen_input, mon_vPY, spikes_PY, mon_vFS,
