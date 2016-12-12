@@ -28,6 +28,7 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
         # print(param_dict)
         # save return argument somewhere
         ret[i_sim] = sim_dict
+    return ret
 
 def run_simulation(network, time) -> dict:
 
@@ -39,29 +40,35 @@ def run_simulation(network, time) -> dict:
     network.run(time)
 
     net_objects = network.objects
+    # print(net_objects)
     # index 5 of objects stores SOM F monitor
     # index 4 stores FS D monitor
     # index 3 stores PY D monitor
+    PY_dmon = net_objects[3]
+    FS_dmon = net_objects[4]
+    SOM_fmon = net_objects[5]
+    spike_m = net_objects[16]
+    print(spike_m)
     
     # Return dict = 
-    PY_vals = network.PY_D_mon.D[0]*network.PY_g.epsp0[0]
-    FS_vals = network.FS_D_mon.D[0]*network.FS_g.epsp0[0]
-    SOM_vals = network.SOM_F_mon.F[0]*network.SOM_g.epsp0[0]
+    PY_vals = PY_dmon.D[0]*0.005
+    FS_vals = FS_dmon.D[0]*0.007
+    SOM_vals = SOM_fmon.F[0]*0.0005
     # print(PY_vals)
     # print(FS_vals)
     # print(SOM_vals)
-    PY_arr = [0]*len(network.spike_monitor.t[:])
-    FS_arr = [0]*len(network.spike_monitor.t[:])
-    SOM_arr = [0]*len(network.spike_monitor.t[:])
+    PY_arr = [0]*len(spike_m.t[:])
+    FS_arr = [0]*len(spike_m.t[:])
+    SOM_arr = [0]*len(spike_m.t[:])
 
-    for i in range(len(network.spike_monitor.t[:])):
-        spike_t = network.spike_monitor.t[i]
+    for i in range(len(spike_m.t[:])):
+        spike_t = spike_m.t[i]
         PY_arr[i] = PY_vals[spike_t/(0.1*msecond)]
         FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]
         SOM_arr[i] = SOM_vals[spike_t/(0.1*msecond)]
 
     epsp_dict = {"PY_EPSP":PY_vals, "FS_EPSP":FS_vals, "SOM_EPSP":SOM_vals}
-    pulses = np.arange(1, len(network.spike_monitor.t[:])+1)
+    pulses = np.arange(1, len(spike_m.t[:])+1)
     epsp_dict["pulse_num"]=pulses
     print("dict for this sim= ", epsp_dict)
 
