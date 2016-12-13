@@ -1,4 +1,4 @@
-from PY_FS_SOM_neurons_init import *
+from functions import *
 
 def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, n_FS=[20]*10,
         n_SOM=[20]*10, PY_Vm=[-0.08]*10, FS_Vm=[-0.065]*10, SOM_Vm=[-0.065]*10,
@@ -64,8 +64,8 @@ def run_simulation(network, time) -> dict:
 
     for i in range(len(spike_m.t[:])):
         spike_t = spike_m.t[i]
-        PY_arr[i] = PY_vals[spike_t/(0.1*msecond)]
-        FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]
+        PY_arr[i] = PY_vals[spike_t/(0.1*msecond)]          # hard code dt
+        FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]          # use event monitor that records on_pre?
         SOM_arr[i] = SOM_vals[spike_t/(0.1*msecond)]
 
     epsp_dict = {"PY_EPSP":PY_vals, "FS_EPSP":FS_vals, "SOM_EPSP":SOM_vals}

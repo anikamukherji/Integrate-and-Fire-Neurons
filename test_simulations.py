@@ -1,5 +1,4 @@
 from simulations import *
-from PY_FS_SOM_neurons_init import *
 import matplotlib.pyplot as plt
 
 test_dict = sim_caller(3, 0.5*second, input_frequency=[10, 50, 100])
