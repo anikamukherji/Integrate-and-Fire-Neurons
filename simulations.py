@@ -11,8 +11,9 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
     # take in a bunch of parameters 
     # take in N for num of simulations
     # format each parameter to match num of simulations
-    for i_sim in range(1, N+1):
-        print("Sim # ", i_sim)
+    for i_sim in range(0, N):
+        # print i_sim + 1 because indexed starting at 0
+        print("Sim # ", i_sim+1)
         # build a dictionary for the parameter set for that run
         param_dict = {"input_frequency":input_frequency[i_sim], "n_input":n_input[i_sim],
                 "n_PY":n_PY[i_sim], "n_FS":n_FS[i_sim], "n_SOM":n_SOM[i_sim], 
@@ -27,7 +28,7 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
         sim_dict = run_simulation(net, time)
         # print(param_dict)
         # save return argument somewhere
-        ret[i_sim] = sim_dict
+        ret[i_sim+1] = sim_dict
     return ret
 
 def run_simulation(network, time) -> dict:
