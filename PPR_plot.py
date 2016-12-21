@@ -27,10 +27,6 @@ PY_PPR_10[3] = PY_4[9]/PY_4[0]
 PY_5 = ret_dict[5]['PY_EPSP']
 PY_PPR_2[4] = PY_5[1]/PY_5[0]
 PY_PPR_10[4] = PY_5[9]/PY_5[0]
-print(len(PY_1))
-print(len(PY_2))
-print(len(PY_3))
-print(len(PY_4))
 
 # same for FS neurons
 FS_1 = ret_dict[1]['FS_EPSP']
