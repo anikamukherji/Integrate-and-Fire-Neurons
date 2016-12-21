@@ -49,7 +49,7 @@ def run_simulation(network, time) -> dict:
     FS_dmon = net_objects[4]
     SOM_fmon = net_objects[5]
     spike_m = net_objects[16]
-    print(spike_m)
+    # print(spike_m)
     
     # Return dict = 
     PY_vals = PY_dmon.D[0]*0.005
@@ -58,6 +58,7 @@ def run_simulation(network, time) -> dict:
     # print(PY_vals)
     # print(FS_vals)
     # print(SOM_vals)
+    # print(len(spike_m.t[:]))
     PY_arr = [0]*len(spike_m.t[:])
     FS_arr = [0]*len(spike_m.t[:])
     SOM_arr = [0]*len(spike_m.t[:])
@@ -68,7 +69,7 @@ def run_simulation(network, time) -> dict:
         FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]          # use event monitor that records on_pre?
         SOM_arr[i] = SOM_vals[spike_t/(0.1*msecond)]
 
-    epsp_dict = {"PY_EPSP":PY_vals, "FS_EPSP":FS_vals, "SOM_EPSP":SOM_vals}
+    epsp_dict = {"PY_EPSP":PY_arr, "FS_EPSP":FS_arr, "SOM_EPSP":SOM_arr}
     pulses = np.arange(1, len(spike_m.t[:])+1)
     epsp_dict["pulse_num"]=pulses
     print("dict for this sim= ", epsp_dict)
@@ -78,8 +79,26 @@ def run_simulation(network, time) -> dict:
 def init_net(arg_dict, time):
     
     sim_net = Network()
+    print(time)
+    # print(1/arg_dict["input_frequency"]*second)
     input_g = make_spike_generator(arg_dict["n_input"], np.arange(0*second, time, 1/arg_dict["input_frequency"]*second))  
     # poisson_g = make_input_g(arg_dict["n_input"], arg_dict["input_frequency"])
+
+    eqs = '''
+        dv/dt = (Vm - v)/tau_m : volt (unless refractory)
+        Vm : volt
+        tau_m : second
+        epsp0 : volt
+        epsp : volt
+
+        dD/dt = (1-D)/tau_d : 1 
+        dF/dt = (1-F)/tau_f : 1
+        tau_f : second
+        tau_d : second
+        d_rate : 1
+        f_rate : 1 
+       '''
+
     PY_g = make_neuron_group(arg_dict["n_PY"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
     FS_g = make_neuron_group(arg_dict["n_FS"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
     SOM_g = make_neuron_group(arg_dict["n_SOM"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')

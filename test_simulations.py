@@ -16,7 +16,11 @@ SOM_1 = ret_dict[1]['SOM_EPSP']
 SOM_2 = ret_dict[2]['SOM_EPSP']
 SOM_3 = ret_dict[3]['SOM_EPSP']
 
-f, (ax10, ax50, ax100) = plt.subplots(3, sharex = True, sharey= True)
+print(PY_1[:10])
+print(PY_2[:10])
+print(PY_3[:10])
+
+f, (ax10, ax50, ax100) = plt.subplots(3, sharex=True, sharey=True)
 ax10.plot(PY_1, 'blue')
 ax10.plot(FS_1, 'green')
 ax10.plot(SOM_1, 'red')
@@ -31,5 +35,6 @@ ax100.set_ylim([-0.002, 0.009])
 ax10.set_title("EPSP Strength for 10 Hz Input Train")
 ax50.set_title("EPSP Strength for 50 Hz Input Train")
 ax100.set_title("EPSP Strength for 100 Hz Input Train")
+ax100.set_xlabel("Time steps (10^-4 seconds)")
 plt.show()
 
