@@ -80,9 +80,7 @@ def init_net(arg_dict, time):
     
     sim_net = Network()
     input_g = make_spike_generator(arg_dict["n_input"], np.arange(0*second, time, 1/arg_dict["input_frequency"]*second))  
-    #
     # uncomment the line below if you want a poisson input group instead
-    #
     # input_g = make_poisson_input(arg_dict["n_input"], arg_dict["input_frequency"])
 
     eqs = '''
