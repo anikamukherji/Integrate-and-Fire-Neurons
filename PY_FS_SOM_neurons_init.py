@@ -112,6 +112,7 @@ def visualise_connectivity(S):
 # facilitating weights are additive 
 # depressing weights are multiplicative
 # membrane potential & synaptic weights decay exponentially
+# TODO are there namespace violations here? Can Brian use the same eqs string for all neurons? Or should we specify the name space explictly?
 eqs = '''
     dv/dt = (Vm - v)/tau_m : volt (unless refractory)
     Vm : volt
@@ -126,7 +127,7 @@ eqs = '''
     d_rate : 1
     f_rate : 1 
    '''
-
+# TODO what's up with the PY_group, FS_group, SOM_group? Delete these if they don't get used? since the magic method "run()" collects all objects, these could be collected too...
 # PY Neuron Group
 PY_group = make_neuron_group(20, 'v>-0.045*volt', 'v=-0.05*volt',
         eqs, 0.005*second, 'linear')
