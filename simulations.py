@@ -1,4 +1,4 @@
-from PY_FS_SOM_neurons_init import *
+from functions import *
 
 def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, n_FS=[20]*10,
         n_SOM=[20]*10, PY_Vm=[-0.08]*10, FS_Vm=[-0.065]*10, SOM_Vm=[-0.065]*10,
@@ -11,8 +11,9 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
     # take in a bunch of parameters 
     # take in N for num of simulations
     # format each parameter to match num of simulations
-    for i_sim in range(1, N+1):
-        print("Sim # ", i_sim)
+    for i_sim in range(0, N):
+        # print i_sim + 1 because indexed starting at 0
+        print("Sim # ", i_sim+1)
         # build a dictionary for the parameter set for that run
         # TODO use list comprehension to quickly build this based on the keys from params_all_sims
         param_dict = {"input_frequency":input_frequency[i_sim], "n_input":n_input[i_sim],
@@ -28,7 +29,8 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
         sim_dict = run_simulation(net, time)
         # print(param_dict)
         # save return argument somewhere
-        ret[i_sim] = sim_dict
+        ret[i_sim+1] = sim_dict
+    return ret
 
 def run_simulation(network, time) -> dict:
     # TODO what's up with start_scope() in Brian2, and is it useful here?
@@ -40,29 +42,36 @@ def run_simulation(network, time) -> dict:
     network.run(time)
 
     net_objects = network.objects
+    # print(net_objects)
     # index 5 of objects stores SOM F monitor
     # index 4 stores FS D monitor
     # index 3 stores PY D monitor
+    PY_dmon = net_objects[3]
+    FS_dmon = net_objects[4]
+    SOM_fmon = net_objects[5]
+    spike_m = net_objects[16]
+    # print(spike_m)
     
-    # Return dict =
-    PY_vals = network.PY_D_mon.D[0]*network.PY_g.epsp0[0]
-    FS_vals = network.FS_D_mon.D[0]*network.FS_g.epsp0[0]
-    SOM_vals = network.SOM_F_mon.F[0]*network.SOM_g.epsp0[0]
+    # Return dict = 
+    PY_vals = PY_dmon.D[0]*0.005
+    FS_vals = FS_dmon.D[0]*0.007
+    SOM_vals = SOM_fmon.F[0]*0.0005
     # print(PY_vals)
     # print(FS_vals)
     # print(SOM_vals)
-    PY_arr = [0]*len(network.spike_monitor.t[:])
-    FS_arr = [0]*len(network.spike_monitor.t[:])
-    SOM_arr = [0]*len(network.spike_monitor.t[:])
+    # print(len(spike_m.t[:]))
+    PY_arr = [0]*len(spike_m.t[:])
+    FS_arr = [0]*len(spike_m.t[:])
+    SOM_arr = [0]*len(spike_m.t[:])
 
-    for i in range(len(network.spike_monitor.t[:])):
-        spike_t = network.spike_monitor.t[i]
-        PY_arr[i] = PY_vals[spike_t/(0.1*msecond)]  # TODO variable dt instead of hardcoded 0.001 (here and elsewhere)
-        FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]  # TODO consider +1 to floor division (x//y)+1, or ceiling round: -(-x//y)
-        SOM_arr[i] = SOM_vals[spike_t/(0.1*msecond)] # TODO also consider an "event monitor" to grab EPSPs automatically
+    for i in range(len(spike_m.t[:])):
+        spike_t = spike_m.t[i]
+        PY_arr[i] = PY_vals[spike_t/(0.1*msecond)]          # hard code dt
+        FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]          # use event monitor that records on_pre?
+        SOM_arr[i] = SOM_vals[spike_t/(0.1*msecond)]
 
-    epsp_dict = {"PY_EPSP":PY_vals, "FS_EPSP":FS_vals, "SOM_EPSP":SOM_vals}
-    pulses = np.arange(1, len(network.spike_monitor.t[:])+1)
+    epsp_dict = {"PY_EPSP":PY_arr, "FS_EPSP":FS_arr, "SOM_EPSP":SOM_arr}
+    pulses = np.arange(1, len(spike_m.t[:])+1)
     epsp_dict["pulse_num"]=pulses
     print("dict for this sim= ", epsp_dict)
 
@@ -71,9 +80,25 @@ def run_simulation(network, time) -> dict:
 def init_net(arg_dict, time):
     
     sim_net = Network()
-    input_g = make_spike_generator(arg_dict["n_input"], np.arange(0*second, time, 1/arg_dict["input_frequency"]*second))  # TODO is one call to "second" sufficient (here and elsewhere)?
-    # poisson_g = make_input_g(arg_dict["n_input"], arg_dict["input_frequency"])
-    # TODO consider using method='euler' instead of method='linear'?
+    input_g = make_spike_generator(arg_dict["n_input"], np.arange(0*second, time, 1/arg_dict["input_frequency"]*second))  
+    # uncomment the line below if you want a poisson input group instead
+    # input_g = make_poisson_input(arg_dict["n_input"], arg_dict["input_frequency"])
+
+    eqs = '''
+        dv/dt = (Vm - v)/tau_m : volt (unless refractory)
+        Vm : volt
+        tau_m : second
+        epsp0 : volt
+        epsp : volt
+
+        dD/dt = (1-D)/tau_d : 1 
+        dF/dt = (1-F)/tau_f : 1
+        tau_f : second
+        tau_d : second
+        d_rate : 1
+        f_rate : 1 
+       '''
+
     PY_g = make_neuron_group(arg_dict["n_PY"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
     FS_g = make_neuron_group(arg_dict["n_FS"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
     SOM_g = make_neuron_group(arg_dict["n_SOM"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
