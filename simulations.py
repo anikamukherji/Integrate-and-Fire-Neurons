@@ -41,25 +41,34 @@ def run_simulation(network, time) -> dict:
 
     network.run(time)
 
+    # pulling out monitors from network
     PY_dmon = network['PY_D_mon']
     FS_dmon = network['FS_D_mon'] 
     SOM_fmon = network['SOM_F_mon'] 
     spike_m = network['spike_monitor'] 
     
+    # pulling out neuron groups from network
+    PY = network['PY_g']
+    FS = network['FS_g']
+    SOM = network['SOM_g']
+
     # Return dict = 
-    PY_vals = PY_dmon.D[0]*0.005
-    FS_vals = FS_dmon.D[0]*0.007
-    SOM_vals = SOM_fmon.F[0]*0.0005
+    PY_vals = PY_dmon.D[0]*PY.epsp0[0]
+    FS_vals = FS_dmon.D[0]*FS.epsp0[0]
+    SOM_vals = SOM_fmon.F[0]*SOM.epsp0[0]
     num_spikes = len(spike_m.t[:])
     PY_arr = [0]*num_spikes
+    print(PY.dt)
+    print(FS.dt)
+    print(SOM.dt)
     FS_arr = [0]*num_spikes
     SOM_arr = [0]*num_spikes
 
     for i in range(len(spike_m.t[:])):
         spike_t = spike_m.t[i]
-        PY_arr[i] = PY_vals[spike_t/(0.1*msecond)]          # hard code dt
-        FS_arr[i] = FS_vals[spike_t/(0.1*msecond)]          # use event monitor that records on_pre?
-        SOM_arr[i] = SOM_vals[spike_t/(0.1*msecond)]
+        PY_arr[i] = PY_vals[spike_t/PY.dt]          # hard code dt
+        FS_arr[i] = FS_vals[spike_t/FS.dt]          # use event monitor that records on_pre?
+        SOM_arr[i] = SOM_vals[spike_t/SOM.dt]
 
     epsp_dict = {"PY_EPSP":PY_arr, "FS_EPSP":FS_arr, "SOM_EPSP":SOM_arr}
     pulses = np.arange(1, len(spike_m.t[:])+1)

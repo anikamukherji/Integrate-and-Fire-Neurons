@@ -24,7 +24,7 @@ def make_spike_generator(N, time_array, str_name=None):
     return gen
 
 def make_neuron_group(N, thresh, reset_value, eq_model, refract,
-        integration_method, str_name=None, Clock=None):
+        integration_method, str_name=None, time_step=0.1*msecond):
     '''
     Makes neuron group with N neurons
     All other parameters should be formatted as strings
@@ -32,10 +32,12 @@ def make_neuron_group(N, thresh, reset_value, eq_model, refract,
     '''
     if str_name is None:
         neuron_group = NeuronGroup(N, threshold=thresh, reset=reset_value,
-            model=eq_model, refractory=refract, method=integration_method)
+            model=eq_model, refractory=refract, method=integration_method, 
+            dt=time_step)
     else:
         neuron_group = NeuronGroup(N, threshold=thresh, reset=reset_value,
-            model=eq_model, refractory=refract, method=integration_method, name=str_name)
+            model=eq_model, refractory=refract, method=integration_method, name=str_name,
+            dt=time_step)
     return neuron_group
 
 def make_synapse(group_1, group_2, post_eq, str_name=None):
