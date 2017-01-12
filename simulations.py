@@ -29,6 +29,7 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
         # print(param_dict)
         # save return argument somewhere
         ret[i_sim+1] = sim_dict
+        print("Ready for next sim")
     return ret
 
 def run_simulation(network, time) -> dict:
@@ -40,28 +41,19 @@ def run_simulation(network, time) -> dict:
 
     network.run(time)
 
-    net_objects = network.objects
-    # print(net_objects)
-    # index 5 of objects stores SOM F monitor
-    # index 4 stores FS D monitor
-    # index 3 stores PY D monitor
-    PY_dmon = net_objects[3]
-    FS_dmon = net_objects[4]
-    SOM_fmon = net_objects[5]
-    spike_m = net_objects[16]
-    # print(spike_m)
+    PY_dmon = network['PY_D_mon']
+    FS_dmon = network['FS_D_mon'] 
+    SOM_fmon = network['SOM_F_mon'] 
+    spike_m = network['spike_monitor'] 
     
     # Return dict = 
     PY_vals = PY_dmon.D[0]*0.005
     FS_vals = FS_dmon.D[0]*0.007
     SOM_vals = SOM_fmon.F[0]*0.0005
-    # print(PY_vals)
-    # print(FS_vals)
-    # print(SOM_vals)
-    # print(len(spike_m.t[:]))
-    PY_arr = [0]*len(spike_m.t[:])
-    FS_arr = [0]*len(spike_m.t[:])
-    SOM_arr = [0]*len(spike_m.t[:])
+    num_spikes = len(spike_m.t[:])
+    PY_arr = [0]*num_spikes
+    FS_arr = [0]*num_spikes
+    SOM_arr = [0]*num_spikes
 
     for i in range(len(spike_m.t[:])):
         spike_t = spike_m.t[i]
@@ -72,14 +64,14 @@ def run_simulation(network, time) -> dict:
     epsp_dict = {"PY_EPSP":PY_arr, "FS_EPSP":FS_arr, "SOM_EPSP":SOM_arr}
     pulses = np.arange(1, len(spike_m.t[:])+1)
     epsp_dict["pulse_num"]=pulses
-    print("dict for this sim= ", epsp_dict)
+    # print("dict for this sim= ", epsp_dict)
 
     return epsp_dict
 
 def init_net(arg_dict, time):
     
     sim_net = Network()
-    input_g = make_spike_generator(arg_dict["n_input"], np.arange(0*second, time, 1/arg_dict["input_frequency"]*second))  
+    input_g = make_spike_generator(arg_dict["n_input"], np.arange(0, time, (1*second)/arg_dict["input_frequency"]))
     # uncomment the line below if you want a poisson input group instead
     # input_g = make_poisson_input(arg_dict["n_input"], arg_dict["input_frequency"])
 
@@ -98,9 +90,12 @@ def init_net(arg_dict, time):
         f_rate : 1 
        '''
 
-    PY_g = make_neuron_group(arg_dict["n_PY"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
-    FS_g = make_neuron_group(arg_dict["n_FS"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
-    SOM_g = make_neuron_group(arg_dict["n_SOM"], 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.003*second, 'linear')
+    PY_g = make_neuron_group(arg_dict["n_PY"], 'v>-0.045*volt', 'v=-0.05*volt', eqs,
+            0.003*second, 'euler', name='PY_g')
+    FS_g = make_neuron_group(arg_dict["n_FS"], 'v>-0.045*volt', 'v=-0.05*volt', eqs,
+            0.003*second, 'euler', name='FS_g')
+    SOM_g = make_neuron_group(arg_dict["n_SOM"], 'v>-0.045*volt', 'v=-0.05*volt', eqs,
+            0.003*second, 'euler', name='SOM_g')
     sim_net.add(input_g)
     sim_net.add(PY_g)
     sim_net.add(FS_g)
@@ -160,10 +155,10 @@ def init_net(arg_dict, time):
     sim_net.add(syn_FS)
     sim_net.add(syn_SOM)
 
-    spike_monitor = SpikeMonitor(input_g)
-    PY_D_mon = StateMonitor(PY_g, 'D', record=True)
-    FS_D_mon = StateMonitor(FS_g, 'D', record=True)
-    SOM_F_mon = StateMonitor(SOM_g, 'F', record=True)
+    spike_monitor = SpikeMonitor(input_g, name='spike_monitor')
+    PY_D_mon = StateMonitor(PY_g, 'D', record=True, name='PY_D_mon')
+    FS_D_mon = StateMonitor(FS_g, 'D', record=True, name='FS_D_mon')
+    SOM_F_mon = StateMonitor(SOM_g, 'F', record=True, name='SOM_F_mon')
 
     sim_net.add(spike_monitor)
     sim_net.add(PY_D_mon)

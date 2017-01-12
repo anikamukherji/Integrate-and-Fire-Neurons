@@ -21,7 +21,7 @@ eqs = '''
 
 # PY Neuron Group
 PY_group = make_neuron_group(20, 'v>-0.045*volt', 'v=-0.05*volt',
-        eqs, 0.005*second, 'linear')
+        eqs, 0.005*second, 'linear', name='PY_group')
 
 # initializing PY group variables
 PY_group.v = -0.08*volt
@@ -35,7 +35,7 @@ PY_group.d_rate = 0.85
 
 # FS Neuron Group
 FS_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt',
-        eqs, 0.005*second, 'linear')
+        eqs, 0.005*second, 'linear', name='FS_group')
 
 # initializing FS group variables
 FS_group.v = -0.065*volt
@@ -48,7 +48,8 @@ FS_group.D = 1
 FS_group.tau_d = 0.28*second
 
 # SOM Neuron Group
-SOM_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt', eqs, 0.005*second, 'linear')
+SOM_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt', 
+        eqs, 0.005*second, 'linear', name='SOM_group')
 
 # initializing SOM group variables
 SOM_group.v = -0.065*volt

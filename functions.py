@@ -1,6 +1,6 @@
 from brian2 import *
 
-def make_poisson_input(N, firing_rates):
+def make_poisson_input(N, firing_rates, name=None):
     '''
     Makes poisson input group with N neurons 
     firing_rates can be a function formatted as a string or 
@@ -10,7 +10,7 @@ def make_poisson_input(N, firing_rates):
     poisson_input = PoissonGroup(N, rates=firing_rates)
     return poisson_input
 
-def make_spike_generator(N, time_array):
+def make_spike_generator(N, time_array, name=None):
     '''
     Returns SpikeGeneratorGroup with N neurons that fires 
     according to times specified in array (so must have units second)
@@ -19,7 +19,7 @@ def make_spike_generator(N, time_array):
     return gen
 
 def make_neuron_group(N, thresh, reset_value, eq_model, refract,
-        integration_method):
+        integration_method, name=None):
     '''
     Makes neuron group with N neurons
     All other parameters should be formatted as strings
@@ -30,7 +30,7 @@ def make_neuron_group(N, thresh, reset_value, eq_model, refract,
             model=eq_model, refractory=refract, method=integration_method)
     return neuron_group
 
-def make_synapse(group_1, group_2, post_eq):
+def make_synapse(group_1, group_2, post_eq, name=None):
     '''
     Creates synaptic connection between all neurons in group_1 (pre-synaptic)
     and all neurons in group_2 (post-synaptic)
