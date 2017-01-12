@@ -91,11 +91,11 @@ def init_net(arg_dict, time):
        '''
 
     PY_g = make_neuron_group(arg_dict["n_PY"], 'v>-0.045*volt', 'v=-0.05*volt', eqs,
-            0.003*second, 'euler', name='PY_g')
+            0.003*second, 'euler', str_name='PY_g')
     FS_g = make_neuron_group(arg_dict["n_FS"], 'v>-0.045*volt', 'v=-0.05*volt', eqs,
-            0.003*second, 'euler', name='FS_g')
+            0.003*second, 'euler', str_name='FS_g')
     SOM_g = make_neuron_group(arg_dict["n_SOM"], 'v>-0.045*volt', 'v=-0.05*volt', eqs,
-            0.003*second, 'euler', name='SOM_g')
+            0.003*second, 'euler', str_name='SOM_g')
     sim_net.add(input_g)
     sim_net.add(PY_g)
     sim_net.add(FS_g)

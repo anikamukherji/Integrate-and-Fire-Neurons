@@ -6,8 +6,10 @@ def make_poisson_input(N, firing_rates, str_name=None):
     firing_rates can be a function formatted as a string or 
     a number with units Hz
     '''
-
-    poisson_input = PoissonGroup(N, rates=firing_rates, name=str_name)
+    if str_name is None:
+        poisson_input = PoissonGroup(N, rates=firing_rates)
+    else:
+        poisson_input = PoissonGroup(N, rates=firing_rates, name=str_name)
     return poisson_input
 
 def make_spike_generator(N, time_array, str_name=None):
@@ -15,7 +17,10 @@ def make_spike_generator(N, time_array, str_name=None):
     Returns SpikeGeneratorGroup with N neurons that fires 
     according to times specified in array (so must have units second)
     '''
-    gen = SpikeGeneratorGroup(N, [0]*len(time_array), times=time_array, name=str_name)
+    if str_name is None:
+        gen = SpikeGeneratorGroup(N, [0]*len(time_array), times=time_array)
+    else:
+        gen = SpikeGeneratorGroup(N, [0]*len(time_array), times=time_array, name=str_name)
     return gen
 
 def make_neuron_group(N, thresh, reset_value, eq_model, refract,
@@ -25,8 +30,11 @@ def make_neuron_group(N, thresh, reset_value, eq_model, refract,
     All other parameters should be formatted as strings
     Ex. thresh='v>-0.04*volt', reset_value='v=-0.05*volt'
     '''
-
-    neuron_group = NeuronGroup(N, threshold=thresh, reset=reset_value,
+    if str_name is None:
+        neuron_group = NeuronGroup(N, threshold=thresh, reset=reset_value,
+            model=eq_model, refractory=refract, method=integration_method)
+    else:
+        neuron_group = NeuronGroup(N, threshold=thresh, reset=reset_value,
             model=eq_model, refractory=refract, method=integration_method, name=str_name)
     return neuron_group
 
@@ -36,8 +44,11 @@ def make_synapse(group_1, group_2, post_eq, str_name=None):
     and all neurons in group_2 (post-synaptic)
     Postsynaptic dynamics are controlled by post_eq string param
     '''
-    
-    syn = Synapses(group_1, group_2, on_pre=post_eq, name=str_name) 
+   
+    if str_name is None:
+        syn = Synapses(group_1, group_2, on_pre=post_eq)
+    else:
+        syn = Synapses(group_1, group_2, on_pre=post_eq, name=str_name)
     return syn
 
 def connect_synapse(synapse):
