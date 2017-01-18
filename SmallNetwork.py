@@ -1,5 +1,4 @@
 from brian2 import *
-from brian2.units import *
 
 start_scope()
 
