@@ -1,5 +1,6 @@
 
 from brian2 import *
+from functions import *
 
 eqs = '''
     dV/dt = (V0 - V + Ge_total*(Ve - V) + Gi_total*(Vi - V))/tau_m : volt
@@ -50,7 +51,7 @@ model_cell.Gi_total = 0
 model_cell_mon = StateMonitor(model_cell,'V', record=True)
 
 # figure out how in the world to model LGN input
-thalamic_input = PoissonGroup(200, '(50*sin(t*(2*pi)/second)+50)*Hz')
+thalamic_input = PoissonGroup(200, '(50*sin(t*(6*pi)/second))*Hz')
 # spike monitor
 poisson_mon = SpikeMonitor(thalamic_input)
 
@@ -76,17 +77,24 @@ syn.strength_i = 0.0025
 run(2*second)
 
 f, (ax_sin, ax_input, ax_model) = plt.subplots(3, sharex=True, sharey=False)
+ax_sin.set_title("Stimulating a Model Cell with Sinusoidal Poisson Firing Rates Using Chance et al. Dynamics")
 
 times = poisson_mon.t/ms
 model_times = model_cell_mon.t/ms
 seconds = np.arange(0, 2, .001)
-print(seconds)
 
-ax_sin.plot(50*sin(2*seconds*pi)+50)
+ax_sin.plot(50*sin(6*seconds*pi))
+ax_sin.set_ylim([0,55])
+ax_sin.set_ylabel("Poisson Firing Rate")
 
 ax_input.plot(times, poisson_mon.i, '|k')
 ax_input.set_yticks([])
 
 ax_model.plot(model_times, model_cell_mon.V[0])
 ax_model.set_ylim([-0.09,-0.04])
+ax_model.set_ylabel("Model Cell MP (V)")
+ax_model.set_xlabel("Time (ms)")
 plt.show()
+
+# visualise_connectivity(syn)
+# print(syn._registered_variables)
