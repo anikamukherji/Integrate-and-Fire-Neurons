@@ -8,7 +8,7 @@ Anika Mukherji
 
 ## Installation Instructions
 
-command prompt to install dependencies (located)
+Command prompt to install dependencies: 
 ```
 pip3 install -r requirements.txt
 ```
