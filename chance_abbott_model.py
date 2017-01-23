@@ -47,13 +47,13 @@ model_cell.tau_i_model = 0.010*second
 model_cell.Ge_total = 0
 model_cell.Gi_total = 0
 
-# state monitor
+# state monitor 
 model_cell_mon = StateMonitor(model_cell,'V', record=True)
 
-# figure out how in the world to model LGN input
-thalamic_input = PoissonGroup(200, '20*sin(2*pi*t*3/second)*Hz')
-# spike monitor
+firing_rate = '100*sin(2*pi*t*.1/second)*Hz'
+thalamic_input = PoissonGroup(200, firing_rate)
 poisson_mon = SpikeMonitor(thalamic_input)
+# figure out how in the world to model LGN input
 
 syn = Synapses(thalamic_input, model_cell, model=syn_eqs, method='euler', on_pre=onspike_eqs)
 syn.connect(i=range(0,200), j=[0])
@@ -73,25 +73,25 @@ syn.d_fast = 0.4
 # may differ when creating DS model
 syn.strength_e = 0.009
 syn.strength_i = 0.00
+store("init")
 
-run(5*second)
+frequencies = np.logspace(-2, 2, 8)
 
-f, (ax_sin, ax_input, ax_model) = plt.subplots(3, sharex=True, sharey=False)
-ax_sin.set_title("Stimulating a Model Cell with Sinusoidal Poisson Firing Rates Using Chance et al. Dynamics")
+run(3*second)
+
+
+f, (ax_input, ax_model) = plt.subplots(2, sharex=True, sharey=False)
+ax_input.set_title("Stimulating a Model Cell with Sinusoidal Poisson Firing Rates Using Chance et al. Dynamics")
 
 times = poisson_mon.t/ms
 model_times = model_cell_mon.t/ms
 seconds = np.arange(0, 5, .001)
 
-ax_sin.plot(20*sin(2*pi*seconds*3))
-ax_sin.set_ylim([0,105])
-ax_sin.set_ylabel("Poisson Firing Rate")
-
 ax_input.plot(times, poisson_mon.i, '|k')
 ax_input.set_yticks([])
 
 ax_model.plot(model_times, model_cell_mon.V[0])
-ax_model.set_ylim([-0.09,-0.04])
+ax_model.set_ylim([-0.071,-0.061])
 ax_model.set_ylabel("Model Cell MP (V)")
 ax_model.set_xlabel("Time (ms)")
 plt.show()
