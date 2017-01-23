@@ -152,7 +152,7 @@ def init_net(arg_dict, time):
                                         ''')
 
     syn_SOM = make_synapse(input_g, SOM_g, '''
-                                        epsp = epsp*F
+                                        epsp = epsp0*F
                                         v_post += epsp
                                         F += f_rate
                                         ''')
