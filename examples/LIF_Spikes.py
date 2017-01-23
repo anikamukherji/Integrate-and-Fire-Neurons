@@ -3,6 +3,7 @@ import numpy as np
 
 # simulates and plots spiking neuronal membrane
 # membrane voltage = 0 represents resting membrane potential
+# using a for loop to simulate integration, rather than the brian2 package
 
 
 T = 100                             # total simulation time (ms)

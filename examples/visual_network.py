@@ -1,5 +1,5 @@
 from brian2 import *
-from PY_FS_SOM_neurons_init import *
+from modules.networks.PY_FS_SOM_neurons_init import *
 
 poisson_input = make_poisson_input(30, '40*sin(t*(2*pi)*3/second)*Hz')
 
@@ -41,10 +41,10 @@ run(.5*second)
 # print('PY Neuron 1 Voltages= ', mon_PY.v[0][0:20])
 # print('FS Neuron 1 Voltages= ', mon_FS.v[0][0:20])
 # print('SOM Neuron 1 Voltages=', mon_SOM.v[0][0:20])
-print(mon_PY.t[:])
-print(len(mon_PY.t[:]))
-print(500/0.1)
-print(mon_poisson_input.t[:])
+# print(mon_PY.t[:])
+# print(len(mon_PY.t[:]))
+# print(500/0.1)
+# print(mon_poisson_input.t[:])
 
 plot_input_with_3_groups(mon_poisson_input, mon_PY, spikes_PY, 
         mon_FS, spikes_FS, mon_SOM, spikes_SOM, 'Poisson Inputs into PY, FS, and SOM neurons', 'PY Neurons MP (v)', 'FS Neurons MP (v)',

@@ -1,5 +1,5 @@
 from brian2 import *
-from functions import *
+from modules.functions import *
 
 # facilitating weights are additive 
 # depressing weights are multiplicative
@@ -21,7 +21,7 @@ eqs = '''
 
 # PY Neuron Group
 PY_group = make_neuron_group(20, 'v>-0.045*volt', 'v=-0.05*volt',
-        eqs, 0.005*second, 'linear', name='PY_group')
+        eqs, 0.005*second, 'linear', str_name='PY_group')
 
 # initializing PY group variables
 PY_group.v = -0.08*volt
@@ -35,7 +35,7 @@ PY_group.d_rate = 0.85
 
 # FS Neuron Group
 FS_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt',
-        eqs, 0.005*second, 'linear', name='FS_group')
+        eqs, 0.005*second, 'linear', str_name='FS_group')
 
 # initializing FS group variables
 FS_group.v = -0.065*volt
@@ -49,7 +49,7 @@ FS_group.tau_d = 0.28*second
 
 # SOM Neuron Group
 SOM_group = make_neuron_group(10, 'v>-0.045*volt', 'v=-0.05*volt', 
-        eqs, 0.005*second, 'linear', name='SOM_group')
+        eqs, 0.005*second, 'linear', str_name='SOM_group')
 
 # initializing SOM group variables
 SOM_group.v = -0.065*volt
@@ -61,4 +61,7 @@ SOM_group.tau_f = 0.022*second
 SOM_group.F = 1
 SOM_group.f_rate = 0.2
 
-
+net = Network()
+net.add(PY_group)
+net.add(FS_group)
+net.add(SOM_group)

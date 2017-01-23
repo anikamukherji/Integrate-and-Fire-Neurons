@@ -24,7 +24,8 @@ syn_eqs = '''
     d_fast : 1
     strength_e : 1 
     strength_i : 1
-         '''
+     '''
+
 onspike_eqs = '''
     G_e += strength_e*D 
     Ge_total_post += G_e

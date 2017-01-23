@@ -1,3 +1,5 @@
+# Was using brian1 here, so the program won't run property with brian2
+
 from brian import *
 import numpy as np
 

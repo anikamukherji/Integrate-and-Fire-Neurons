@@ -1,4 +1,4 @@
-from simulations import *
+from modules.simulations import *
 
 input_freq = [10, 35, 60, 85, 110]
 ret_dict = sim_caller(5, 1*second, input_frequency=input_freq)

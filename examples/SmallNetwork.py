@@ -1,5 +1,8 @@
 from brian2 import *
 
+# Results in random walk
+
+
 start_scope()
 
 w_e = 0.013 * volt

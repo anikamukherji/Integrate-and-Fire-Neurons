@@ -1,5 +1,5 @@
 from brian2 import *
-from PY_FS_SOM_neurons_init import *
+from modules.networks.PY_FS_SOM_neurons_init import *
 
 # spikes = make_spike_generator(1, np.arange(0.01, 1, 0.01)*second)
 spikes = make_spike_generator(1, np.arange(0.01, 1, 0.3)*second)

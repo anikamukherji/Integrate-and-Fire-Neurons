@@ -1,4 +1,4 @@
-from simulations import *
+from modules.simulations import *
 import matplotlib.pyplot as plt
 
 test_dict = sim_caller(3, 0.5*second, input_frequency=[10, 50, 100])
