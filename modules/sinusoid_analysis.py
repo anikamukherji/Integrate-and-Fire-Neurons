@@ -1,6 +1,9 @@
 import numpy as np
+import math
+import matplotlib.pyplot as plt
 
-def onset_offset(firing_rate_array, threshold):
+    
+def onset_offset(frequency, runtime, threshold):
 
     '''
     Returns an array of onset and offset times
@@ -8,6 +11,11 @@ def onset_offset(firing_rate_array, threshold):
     -1's indicate a time of pulse offset
     0's indicate no change in activity 
     '''
+    # match firing_rate_array to time array assuming dt=0.1*ms
+    firing_rate_array = list(range(0, runtime*10000))
+    # translate into seconds
+    # turn into array of sine values ranging from 0 to 1
+    firing_rate_array = [math.sin(2*math.pi*t*frequency) for t in firing_rate_array]
     thresh_arr = [0 if v<threshold else 1 for v in firing_rate_array]
     on_off_arr = np.diff(thresh_arr)
     # account for lost first term by appending a 0
