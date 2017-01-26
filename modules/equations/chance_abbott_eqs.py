@@ -30,24 +30,37 @@ neuron_eqs = '''
 synapse_eqs = '''
     dG_e/dt = (-G_e)/tau_e : 1 (clock-driven)
     dG_i/dt = (-G_i)/tau_i : 1 (clock-driven)
-    dD/dt = (1 - D)/tau_D : 1 (clock-driven)
+    dD1/dt = (1 - D1)/tau_D1 : 1 (clock-driven)
+    dD2/dt = (1 - D2)/tau_D2 : 1 (clock-driven)
+    dF1/dt = (1 - F1)/tau_F1 : 1 (clock-driven)
+    dF2/dt = (1 - F2)/tau_F2 : 1 (clock-driven)
     tau_e : second
     tau_i : second
-    tau_D : second
-    d_fast : 1
+    tau_D1 : second
+    tau_D2 : second
+    tau_F1 : second
+    tau_F2 : second
+    d1 : 1
+    d2 : 1
+    f1 : 1
+    f2 : 1
     strength_e : 1 
     strength_i : 1
-         '''
+     '''
 
 # On spikes the excitatory and inhibitory conductance from each 
 # synapse get added to the total excitatory and inhibitory 
 # conductance of the model cell
-# D gets multiplied by the depression factor after
+# Depression and faciliation factors get incremented/decremented 
+# by their respective constants
 
 onspike_eqs = '''
-    G_e += strength_e*D 
+    G_e += strength_e*D1*D2*F1*F2
     Ge_total_post += G_e
-    G_i += strength_i*D 
+    G_i += strength_i*D1*D2*F1*F2 
     Gi_total_post += G_i
-    D = d_fast*D
-            '''
+    D1 *= d1
+    D2 *= d2
+    F1 += f1
+    F2 += f2 
+    '''

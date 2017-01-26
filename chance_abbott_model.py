@@ -1,6 +1,7 @@
 
 from brian2 import *
-from functions import *
+from modules.functions import *
+from modules.sinusoid_analysis import *
 
 eqs = '''
     dV/dt = (V0 - V + Ge_total*(Ve - V) + Gi_total*(Vi - V))/tau_m : volt
@@ -51,13 +52,19 @@ model_cell.Gi_total = 0
 # state monitor 
 model_cell_mon = StateMonitor(model_cell,'V', record=True)
 
-firing_rate = '100*sin(2*pi*t*.1/second)*Hz'
-thalamic_input = PoissonGroup(200, firing_rate)
+# imitates a Poisson Group
+thalamic_input = NeuronGroup(200, model='''
+                                    rates = peak_rate*sin(2*pi*t*modulation_rate/second)*Hz : Hz
+                                    modulation_rate : 1
+                                    peak_rate : 1
+                                        ''',
+                                threshold='rand()<rates*dt')
+thalamic_input.peak_rate = 100
 poisson_mon = SpikeMonitor(thalamic_input)
 # figure out how in the world to model LGN input
 
 syn = Synapses(thalamic_input, model_cell, model=syn_eqs, method='euler', on_pre=onspike_eqs)
-syn.connect(i=range(0,200), j=[0])
+syn.connect()
 
 # syanptic conductances
 syn.G_e = 0
@@ -76,26 +83,68 @@ syn.strength_e = 0.009
 syn.strength_i = 0.00
 store("init")
 
-frequencies = np.logspace(-2, 2, 8)
+frequencies = np.logspace(-2, 2, 6)
+####################################
+# Uncomment the lines below to run #
+# sims with diff frequencies #######
+####################################
 
-run(3*second)
+# TO DO - FIX 
+amps = [0]*len(frequencies)
 
+i=0
+for f in frequencies:
 
-f, (ax_input, ax_model) = plt.subplots(2, sharex=True, sharey=False)
-ax_input.set_title("Stimulating a Model Cell with Sinusoidal Poisson Firing Rates Using Chance et al. Dynamics")
+    restore("init")
+    thalamic_input.modulation_rate = f 
+    run(3*second)
+    on_offs = onset_offset(f, 3, 0.4) 
+    last_p = last_pulse(on_offs)
+    n = last_p["on"]
+    f = last_p["off"]
+    if n < f: 
+        peak = max(model_cell_mon.V_[0][n:f])
+        print(peak)
+        trough = min(model_cell_mon.V_[0][n:f])
+        print(trough)
+    else:
+        peak = max(model_cell_mon.V[0][n:])
+        print(peak)
+        trough = min(model_cell_mon.V[0][n:])
+        print(trough)
+    peak_to_trough = (peak - trough)
+    print(peak_to_trough)
+    amps[i] = peak_to_trough
+    i +=  1
+    # plt.plot(model_cell_mon.t/ms, model_cell_mon.V[0], label="{} Hz".format(f))
 
-times = poisson_mon.t/ms
-model_times = model_cell_mon.t/ms
-seconds = np.arange(0, 5, .001)
-
-ax_input.plot(times, poisson_mon.i, '|k')
-ax_input.set_yticks([])
-
-ax_model.plot(model_times, model_cell_mon.V[0])
-ax_model.set_ylim([-0.071,-0.061])
-ax_model.set_ylabel("Model Cell MP (V)")
-ax_model.set_xlabel("Time (ms)")
+plt.plot(frequencies, amps)
+plt.xscale("log")
+plt.ylim(0.0002, 0.0045)
 plt.show()
 
+####################################
+# Uncomment the lines below to run #
+# and plot with on frequency########
+####################################
+
+# run (3*second)
+
+# f, (ax_input, ax_model) = plt.subplots(2, sharex=True, sharey=False)
+# ax_input.set_title("Stimulating a Model Cell with Sinusoidal Poisson Firing Rates Using Chance et al. Dynamics")
+
+# times = poisson_mon.t/ms
+# model_times = model_cell_mon.t/ms
+# seconds = np.arange(0, 5, .001)
+
+# ax_input.plot(times, poisson_mon.i, '|k')
+# ax_input.set_yticks([])
+
+# ax_model.plot(model_times, model_cell_mon.V[0])
+# ax_model.set_ylim([-0.071,-0.061])
+# ax_model.set_ylabel("Model Cell MP (V)")
+# ax_model.set_xlabel("Time (ms)")
+# plt.show()
+
 # visualise_connectivity(syn)
-# print(syn._registered_variables)
+# # print(syn._registered_variables)
