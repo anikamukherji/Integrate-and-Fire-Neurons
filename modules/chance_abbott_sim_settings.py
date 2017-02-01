@@ -36,53 +36,55 @@ settings = {
             "eqs":sinusoid_rate
             },
 
-        "syanpses":{
+        "synapses":{
 
-            ("SOM", "HVA_PY"):{
-                "eqs":syn_eqs,
-                "on_spike":onspike_eqs,
-                "d1":0.4,
-                "d2":1.0,
-                "f1":1.0,
-                "f2":1.0,
-                "tau_D1":0.300*second,
-                "tau_D2":0.300*second,
-                "tau_F1":0.300*second,
-                "tau_F2":0.300*second,
-                "w_e":0.009,
-                "w_i":0.00,
-                "tau_e":0.002*second,
-                "tau_i":0.010*second,
-                "delay":0
-                }, 
+            # ("SOM", "HVA_PY"):{
+                # "eqs":synapse_eqs,
+                # "on_spike":onspike_eqs,
+                # "d1":0.4,
+                # "d2":1.0,
+                # "f1":1.0,
+                # "f2":1.0,
+                # "tau_D1":0.300*second,
+                # "tau_D2":0.300*second,
+                # "tau_F1":0.300*second,
+                # "tau_F2":0.300*second,
+                # "w_e":0.009,
+                # "w_i":0.00,
+                # "tau_e":0.002*second,
+                # "tau_i":0.010*second,
+                # "delay":0
+                # }, 
 
-            ("FS", "HVA_PY"):{
-                "eqs":syn_eqs,
-                "on_spike":onspike_eqs,
-                "d1":0.4,
-                "d2":1.0,
-                "f1":1.0,
-                "f2":1.0,
-                "tau_D1":0.300*second,
-                "tau_D2":0.300*second,
-                "tau_F1":0.300*second,
-                "tau_F2":0.300*second,
-                "w_e":0.009,
-                "w_i":0.00,
-                "tau_e":0.002*second,
-                "tau_i":0.010*second,
-                "delay":0
-                }, 
+            # ("FS", "HVA_PY"):{
+                # "eqs":synapse_eqs,
+                # "on_spike":onspike_eqs,
+                # "d1":0.4,
+                # "d2":1.0,
+                # "f1":1.0,
+                # "f2":1.0,
+                # "tau_D1":0.300*second,
+                # "tau_D2":0.300*second,
+                # "tau_F1":0.300*second,
+                # "tau_F2":0.300*second,
+                # "w_e":0.009,
+                # "w_i":0.00,
+                # "tau_e":0.002*second,
+                # "tau_i":0.010*second,
+                # "delay":0
+                # }, 
 
             ("afferents", "HVA_PY"):{
-                "eqs":syn_eqs,
+                "eqs":synapse_eqs,
                 "on_spike":onspike_eqs,
                 "d1":0.4,
                 "d2":1.0,
                 "f1":1.0,
                 "f2":1.0,
-                "tau_D":0.300*second,
-                "tau_F":0.300*second,
+                "tau_D1":0.300*second,
+                "tau_D2":0.300*second,
+                "tau_F1":0.300*second,
+                "tau_F2":0.300*second,
                 "w_e":0.009,
                 "w_i":0.00,
                 "tau_e":0.002*second,
@@ -91,14 +93,16 @@ settings = {
                 }, 
 
             ("afferents", "FS"):{
-                "eqs":syn_eqs,
+                "eqs":synapse_eqs,
                 "on_spike":onspike_eqs,
                 "d1":0.4,
                 "d2":1.0,
                 "f1":1.0,
                 "f2":1.0,
-                "tau_D":0.300*second,
-                "tau_F":0.300*second,
+                "tau_D1":0.300*second,
+                "tau_D2":0.300*second,
+                "tau_F1":0.300*second,
+                "tau_F2":0.300*second,
                 "w_e":0.009,
                 "w_i":0.00,
                 "tau_e":0.002*second,
@@ -107,14 +111,16 @@ settings = {
                 }, 
 
             ("afferents", "SOM"):{
-                "eqs":syn_eqs,
+                "eqs":synapse_eqs,
                 "on_spike":onspike_eqs,
                 "d1":0.4,
                 "d2":1.0,
                 "f1":1.0,
                 "f2":1.0,
-                "tau_D":0.300*second,
-                "tau_F":0.300*second,
+                "tau_D1":0.300*second,
+                "tau_D2":0.300*second,
+                "tau_F1":0.300*second,
+                "tau_F2":0.300*second,
                 "w_e":0.009,
                 "w_i":0.00,
                 "tau_e":0.002*second,
@@ -124,7 +130,8 @@ settings = {
             },
 
         "monitors":{
-                "afferents":"spikes",
+                "HVA_PY": 'V',
+                "afferents": 'spikes'
             }
 }
 

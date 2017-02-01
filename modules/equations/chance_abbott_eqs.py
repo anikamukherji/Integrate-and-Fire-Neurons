@@ -44,8 +44,8 @@ synapse_eqs = '''
     d2 : 1
     f1 : 1
     f2 : 1
-    strength_e : 1 
-    strength_i : 1
+    w_e : 1 
+    w_i : 1
      '''
 
 # On spikes the excitatory and inhibitory conductance from each 
@@ -55,9 +55,9 @@ synapse_eqs = '''
 # by their respective constants
 
 onspike_eqs = '''
-    G_e += strength_e*D1*D2*F1*F2
+    G_e += w_e*D1*D2*F1*F2
     Ge_total_post += G_e
-    G_i += strength_i*D1*D2*F1*F2 
+    G_i += w_i*D1*D2*F1*F2 
     Gi_total_post += G_i
     D1 *= d1
     D2 *= d2
