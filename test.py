@@ -18,7 +18,7 @@ thal_model='''
         peak_rate : 1
         '''
 
-params = {"thalamic_input":thal_model, "PV":neuron_eqs,
+params = {"PV":neuron_eqs,
         "SOM":neuron_eqs, "PY":neuron_eqs }
 neurons = [0]*len(params)
 
@@ -27,9 +27,15 @@ x = 0
 for key, val in params.items():
     
     neurons[x] = NeuronGroup(1, model=val, name=key)
+    neurons[x].V0 = -0.07*volt
+    print(neurons[x].V0)
     x += 1
 
-print(neurons)
+n = find_neuron_with_name(neurons, "PY")
+n.V0 = -0.09*volt
+print(neurons[2].V0)
+for l in neurons:
+    print(l.name)
 
 syns = [("PV", "PY"), ("SOM", "PY")]
 

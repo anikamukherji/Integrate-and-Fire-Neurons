@@ -89,7 +89,7 @@ frequencies = np.logspace(-2, 2, 6)
 # sims with diff frequencies #######
 ####################################
 
-# TO DO - FIX 
+# TODO - FIX 
 amps = [0]*len(frequencies)
 
 i=0
