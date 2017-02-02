@@ -25,12 +25,12 @@ def create_neurons(neuron_params):
         N = vals["N"]
         eqs = vals["eqs"] 
         # maybe add reset and/or threshold?
-        neuron_list[i] = NeuronGroup(N, model=eqs, method='euler', name=neuron)
+        neuron_list[i] = NeuronGroup(N, model=eqs, threshold='V>=-0.055*volt', reset='V=-0.058*volt', method='euler', name=neuron)
         neuron_list[i].tau_m = vals["tau_m"]
         neuron_list[i].tau_e_model = vals["tau_e"]
         neuron_list[i].tau_i_model = vals["tau_i"]
-        neuron_list[i].V = -0.058*volt
-        neuron_list[i].V0 = -0.058*volt
+        neuron_list[i].V = -0.070*volt
+        neuron_list[i].V0 = -0.070*volt
         neuron_list[i].Ve = -0.0*volt
         neuron_list[i].Vi = -0.090*volt
 
