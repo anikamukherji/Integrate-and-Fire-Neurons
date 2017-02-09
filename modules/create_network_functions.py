@@ -26,9 +26,9 @@ def create_neurons(neuron_params):
         eqs = vals["eqs"] 
         # maybe add reset and/or threshold?
         neuron_list[i] = NeuronGroup(N, model=eqs, threshold='V>=-0.055*volt', reset='V=-0.058*volt', method='euler', name=neuron)
-        neuron_list[i].tau_m = vals["tau_m"]
-        neuron_list[i].tau_e_model = vals["tau_e"]
-        neuron_list[i].tau_i_model = vals["tau_i"]
+        neuron_list[i].tau_m = vals["tau_m"]*second
+        neuron_list[i].tau_e_model = vals["tau_e"]*second
+        neuron_list[i].tau_i_model = vals["tau_i"]*second
         neuron_list[i].V = -0.070*volt
         neuron_list[i].V0 = -0.070*volt
         neuron_list[i].Ve = -0.0*volt
@@ -79,14 +79,14 @@ def create_synapses(synapse_params, neurons):
         created_syns[k].d2 = variables["d2"],
         created_syns[k].f1 = variables["f1"],
         created_syns[k].f2 = variables["f2"],
-        created_syns[k].tau_D1 = variables["tau_D1"],
-        created_syns[k].tau_F1 = variables["tau_F1"],
-        created_syns[k].tau_D2 = variables["tau_D2"],
-        created_syns[k].tau_F2 = variables["tau_F2"],
+        created_syns[k].tau_D1 = variables["tau_D1"]*second,
+        created_syns[k].tau_F1 = variables["tau_F1"]*second,
+        created_syns[k].tau_D2 = variables["tau_D2"]*second,
+        created_syns[k].tau_F2 = variables["tau_F2"]*second,
         created_syns[k].w_e = variables["w_e"]
         created_syns[k].w_i = variables["w_i"]
-        created_syns[k].tau_e = variables["tau_e"]
-        created_syns[k].tau_i = variables["tau_i"]
+        created_syns[k].tau_e = variables["tau_e"]*second
+        created_syns[k].tau_i = variables["tau_i"]*second
         k += 1
     return created_syns
 
