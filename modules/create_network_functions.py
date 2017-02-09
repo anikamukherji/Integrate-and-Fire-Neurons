@@ -102,7 +102,7 @@ def create_state_monitors(monitor_params, neuron_list):
     for key, val in monitor_params.items():
 
         neuron = find_neuron_with_name(neuron_list, key)
-        if neuron.name == "afferents":
+        if val == "spikes":
             mons[i] = SpikeMonitor(neuron, name="afferent_spike_mon")
             continue
         mons[i] = StateMonitor(neuron, val, record=True, name="{}_{}_mon".format(key, val))
