@@ -60,9 +60,9 @@ def create_afferents(afferent_params, poisson=True, sim_length_seconds=3):
         spike_arr = np.arange(0,3,sec_spikes)
         spike_list = spike_arr.tolist()
         neuron_nums = []
-        for i in range(num):
+        for i in num:
             neuron_nums += [i]*len(spike_arr)
-        afferents = SpikeGeneratorGroup(num, neuron_nums,spike_list*num*second, name="afferents")
+        afferents = SpikeGeneratorGroup(num, neuron_nums,[spike_list]*num*second)
     return afferents
     
     

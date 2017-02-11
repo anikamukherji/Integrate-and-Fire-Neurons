@@ -33,6 +33,7 @@ settings = {
             "N":200,
             "modulation_rate":10,
             "peak_rate":10,
+            "spikes_per_second":20,
             "eqs":sinusoid_rate
             },
 

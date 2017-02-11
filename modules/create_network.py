@@ -4,11 +4,14 @@ from create_network_functions import *
 from chance_abbott_sim_settings import *
 
 
-def create_network(settings_modified):
+def create_network(settings_modified, poisson=True):
     net = Network()
 
     neuron_list = create_neurons(settings_modified["neurons"])
-    afferents = create_afferents(settings_modified["afferents"])
+    if poisson:
+        afferents = create_afferents(settings_modified["afferents"])
+    if not poisson:
+        afferents = create_afferents(settings_modified["afferents"], poisson=False)
     neuron_list.append(afferents)
     net.add(neuron_list)
 

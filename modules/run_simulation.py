@@ -51,7 +51,7 @@ def find_list_it(d):
 
 
 
-def run_loops(settings_dict):
+def run_loops(settings_dict, poisson=True):
 
     (path, values) = find_list_it(settings_dict)
     values_list = values
@@ -59,7 +59,10 @@ def run_loops(settings_dict):
     for i in range(len(values_list)):
         mod_settings = settings
         dpath.util.set(mod_settings, path, str(values_list[i]))
-        net = create_network(mod_settings)
+        if poisson:
+            net = create_network(mod_settings)
+        if not poisson:
+            net = create_network(mod_settings, poisson=False)
         net.run(3*second)
         mon = net['HVA_PY_V_mon']
         plt.plot(mon.t/ms, mon.V[0], 
@@ -70,6 +73,6 @@ def run_loops(settings_dict):
 
 
 # print(find_list_it(loop_settings))
-run_loops(loop_settings)
+run_loops(loop_settings, poisson=False)
 
 

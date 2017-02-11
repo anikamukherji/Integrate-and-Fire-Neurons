@@ -33,6 +33,7 @@ loop_settings = {
             "N":200,
             "modulation_rate":[10,30,50,100],
             "peak_rate":10,
+            "spikes_per_second":20,
             "eqs":sinusoid_rate
             },
 
@@ -135,4 +136,4 @@ loop_settings = {
             }
 }
 
-# print(settings["neurons"]["PY"]["eqs"])
+print(loop_settings["afferents"]["spikes_per_second"])
