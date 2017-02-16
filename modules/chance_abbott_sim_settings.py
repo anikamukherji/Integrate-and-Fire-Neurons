@@ -11,26 +11,38 @@ settings = {
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
-                "tau_i":0.010
+                "tau_i":0.010,
+                "thresh":-0.055,
+                "reset":-0.058,
+                "V_rest":-0.07,
+                "refract":0.00
                 },
             "FS":{
                 "N":20,
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
-                "tau_i":0.010
-                    },
+                "tau_i":0.010,
+                "thresh":-0.055,
+                "reset":-0.058,
+                "V_rest":-0.07,
+                "refract":0.00
+                },
             "SOM":{
                 "N":20,
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
-                "tau_i":0.010
+                "tau_i":0.010,
+                "thresh":-0.055,
+                "reset":-0.058,
+                "V_rest":-0.07,
+                "refract":0.00
                 }
             },
 
         "afferents":{
-            "N":200,
+            "N":650,
             "modulation_rate":10,
             "peak_rate":10,
             "spikes_per_second":20,
@@ -69,7 +81,7 @@ settings = {
                 "tau_F1":0.300,
                 "tau_F2":0.300,
                 "w_e":0.00,
-                "w_i":0.2,
+                "w_i":0.02,
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
@@ -86,7 +98,7 @@ settings = {
                 "tau_D2":0.300,
                 "tau_F1":0.080,
                 "tau_F2":0.300,
-                "w_e":0.1,
+                "w_e":0.01,
                 "w_i":0.00,
                 "tau_e":0.002,
                 "tau_i":0.010,
@@ -104,7 +116,7 @@ settings = {
                 "tau_D2":0.300,
                 "tau_F1":0.300,
                 "tau_F2":0.300,
-                "w_e":.2,
+                "w_e":0.02,
                 "w_i":0.00,
                 "tau_e":0.002,
                 "tau_i":0.010,
@@ -116,7 +128,7 @@ settings = {
                 "on_spike":onspike_eqs,
                 "d1":1.0,
                 "d2":1.0,
-                "f1":0.6,
+                "f1":0.2,
                 "f2":0.0,
                 "tau_D1":0.300,
                 "tau_D2":0.300,
@@ -132,6 +144,8 @@ settings = {
 
         "monitors":{
                 "HVA_PY": 'V',
+                "FS": 'V',
+                "SOM": 'V',
                 "afferents": 'spikes'
             }
 }

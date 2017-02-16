@@ -5,6 +5,7 @@
 # Ve/Vi are reversal potentials for excitation/inhibition
 # Ge/Gi_total are excitatory/inhibitory conductances that decay to 0
 
+
 neuron_eqs = '''
     dV/dt = (V0 - V + Ge_total*(Ve - V) + Gi_total*(Vi - V))/tau_m : volt
     dGe_total/dt = (-Ge_total)/tau_e_model : 1

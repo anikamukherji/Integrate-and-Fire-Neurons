@@ -11,29 +11,41 @@ loop_settings = {
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
-                "tau_i":0.010
+                "tau_i":0.010,
+                "thresh":-0.055,
+                "reset":-0.058,
+                "V_rest":-0.07,
+                "refract":0.00
                 },
             "FS":{
                 "N":20,
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
-                "tau_i":0.010
+                "tau_i":0.010,
+                "thresh":-0.055,
+                "reset":-0.058,
+                "V_rest":-0.07,
+                "refract":0.00
                     },
             "SOM":{
                 "N":20,
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
-                "tau_i":0.010
+                "tau_i":0.010,
+                "thresh":-0.055,
+                "reset":-0.058,
+                "V_rest":-0.07,
+                "refract":0.00
                 }
             },
 
         "afferents":{
-            "N":200,
-            "modulation_rate":[10,30,50,100],
+            "N":650,
+            "modulation_rate":25,
             "peak_rate":10,
-            "spikes_per_second":20,
+            "spikes_per_second":[10,20,30],
             "eqs":sinusoid_rate
             },
 
@@ -132,8 +144,9 @@ loop_settings = {
 
         "monitors":{
                 "HVA_PY": 'V',
+                "FS": 'V',
+                "SOM": 'V',
                 "afferents": 'spikes'
             }
 }
 
-print(loop_settings["afferents"]["spikes_per_second"])

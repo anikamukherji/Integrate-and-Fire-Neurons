@@ -51,28 +51,35 @@ def find_list_it(d):
 
 
 
-def run_loops(settings_dict, poisson=True):
+def run_loops(settings_dict, sim_length, poisson=True):
 
     (path, values) = find_list_it(settings_dict)
     values_list = values
 
+    f, axs = plt.subplots(len(values_list), 3)
+    axs[0,0].set_title("HVA_PY response")
+    axs[0,1].set_title("FS response")
+    axs[0,2].set_title("SOM response")
     for i in range(len(values_list)):
         mod_settings = settings
         dpath.util.set(mod_settings, path, str(values_list[i]))
         if poisson:
-            net = create_network(mod_settings)
+            net = create_network(mod_settings, sim_length)
         if not poisson:
-            net = create_network(mod_settings, poisson=False)
-        net.run(3*second)
-        mon = net['HVA_PY_V_mon']
-        plt.plot(mon.t/ms, mon.V[0], 
-                label="mod ={} Hz".format(values_list[i]))
+            net = create_network(mod_settings, sim_length, poisson=False)
+        net.run(sim_length*second)
+        hva_mon = net['HVA_PY_V_mon']
+        fs_mon = net['FS_V_mon']
+        som_mon = net['SOM_V_mon']
+        axs[i,0].plot(hva_mon.t/ms, hva_mon.V[0])
+        axs[i,1].plot(fs_mon.t/ms, fs_mon.V[0])
+        axs[i,2].plot(som_mon.t/ms, som_mon.V[0])
 
-    plt.legend()
     plt.show()
+    spike_mon = net['afferent_spike_mon']
+    plt.plot(spike_mon.t/ms)
 
 
-# print(find_list_it(loop_settings))
-run_loops(loop_settings, poisson=False)
+run_loops(loop_settings, 2, poisson=False)
 
 

@@ -24,21 +24,24 @@ def create_neurons(neuron_params):
         
         N = vals["N"]
         eqs = vals["eqs"] 
-        # maybe add reset and/or threshold?
-        neuron_list[i] = NeuronGroup(N, model=eqs, threshold='V>=-0.055*volt', 
-                reset='V=-0.058*volt', method='euler', name=neuron)
+        t = 'V>=' + str(vals["thresh"]) + '*volt'
+        res = 'V=' + str(vals["reset"]) + '*volt'
+        v_init = vals["V_rest"]
+        refract = vals["refract"]*second
+        neuron_list[i] = NeuronGroup(N, model=eqs, threshold=t, 
+                reset=res,  method='euler', refractory=refract, name=neuron)
         neuron_list[i].tau_m = vals["tau_m"]*second
         neuron_list[i].tau_e_model = vals["tau_e"]*second
         neuron_list[i].tau_i_model = vals["tau_i"]*second
-        neuron_list[i].V = -0.070*volt
-        neuron_list[i].V0 = -0.070*volt
+        neuron_list[i].V = v_init*volt
+        neuron_list[i].V0 = v_init*volt
         neuron_list[i].Ve = -0.0*volt
         neuron_list[i].Vi = -0.090*volt
 
         i += 1
     return neuron_list
         
-def create_afferents(afferent_params, poisson=True, sim_length_seconds=3):
+def create_afferents(afferent_params, sim_length_seconds, poisson=True):
     """
     Returns a neuron group initialized with values specified in params
     settings["afferents"] should be passed in as the argument, with the same 
@@ -55,9 +58,9 @@ def create_afferents(afferent_params, poisson=True, sim_length_seconds=3):
         afferents.peak_rate = peak
     else:
         num = afferent_params["N"]
-        spikes_sec = afferent_params["spikes_per_second"]
+        spikes_sec = int(afferent_params["spikes_per_second"])
         sec_spikes = 1/spikes_sec
-        spike_arr = np.arange(0,3,sec_spikes)
+        spike_arr = np.arange(0,sim_length_seconds,sec_spikes)
         spike_list = spike_arr.tolist()
         neuron_nums = []
         for i in range(num):
@@ -85,7 +88,10 @@ def create_synapses(synapse_params, neurons):
         created_syns[k] = Synapses(pre_neuron, post_neuron, model = variables["eqs"], 
                 method='euler', on_pre = variables["on_spike"], 
                 name="{}_{}_synapse".format(pre_neuron_name, post_neuron_name))
-        created_syns[k].connect()
+        if pre_neuron_name == "afferents":
+            created_syns[k].connect(p=0.3)
+        else:
+            created_syns[k].connect()
         created_syns[k].d1 = variables["d1"],
         created_syns[k].d2 = variables["d2"],
         created_syns[k].f1 = variables["f1"],
