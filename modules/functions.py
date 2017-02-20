@@ -2,8 +2,8 @@ from brian2 import *
 
 def make_poisson_input(N, firing_rates, str_name=None):
     '''
-    Makes poisson input group with N neurons 
-    firing_rates can be a function formatted as a string or 
+    Makes poisson input group with N neurons
+    firing_rates can be a function formatted as a string or
     a number with units Hz
     '''
     if str_name is None:
@@ -14,7 +14,7 @@ def make_poisson_input(N, firing_rates, str_name=None):
 
 def make_spike_generator(N, time_array, str_name=None):
     '''
-    Returns SpikeGeneratorGroup with N neurons that fires 
+    Returns SpikeGeneratorGroup with N neurons that fires
     according to times specified in array (so must have units second)
     '''
     if str_name is None:
@@ -32,7 +32,7 @@ def make_neuron_group(N, thresh, reset_value, eq_model, refract,
     '''
     if str_name is None:
         neuron_group = NeuronGroup(N, threshold=thresh, reset=reset_value,
-            model=eq_model, refractory=refract, method=integration_method, 
+            model=eq_model, refractory=refract, method=integration_method,
             dt=time_step)
     else:
         neuron_group = NeuronGroup(N, threshold=thresh, reset=reset_value,
@@ -46,7 +46,7 @@ def make_synapse(group_1, group_2, post_eq, str_name=None):
     and all neurons in group_2 (post-synaptic)
     Postsynaptic dynamics are controlled by post_eq string param
     '''
-   
+
     if str_name is None:
         syn = Synapses(group_1, group_2, on_pre=post_eq)
     else:
@@ -61,12 +61,12 @@ def connect_synapse(synapse):
     synapse.connect()
 
 # !!!!!PLOT THINGS!!!!!!
-def plot_input_with_3_groups(input_mon, mon_1, spikes_1, mon_2, spikes_2, 
+def plot_input_with_3_groups(input_mon, mon_1, spikes_1, mon_2, spikes_2,
         mon_3, spikes_3, title, y_label_1, y_label_2, y_label_3, ymin, ymax):
     '''
     Make 4 subplots organized vertically
     TOP = raster plot of input group spikes
-    BOTTOM 3 = plots of membrane potential 
+    BOTTOM 3 = plots of membrane potential
     spikes are inserted via gray bars and are recorded with spikemonitors =
     spikes_1/2/3
     '''
@@ -119,4 +119,3 @@ def visualise_connectivity(S):
     xlabel('Source neuron index')
     ylabel('Target neuron index')
     show()
-

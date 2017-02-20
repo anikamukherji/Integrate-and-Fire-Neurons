@@ -67,7 +67,7 @@ settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("FS", "HVA_PY"):{
                 "eqs":synapse_eqs,
@@ -85,7 +85,7 @@ settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("afferents", "HVA_PY"):{
                 "eqs":synapse_eqs,
@@ -103,7 +103,7 @@ settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("afferents", "FS"):{
                 "eqs":synapse_eqs,
@@ -121,7 +121,7 @@ settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("afferents", "SOM"):{
                 "eqs":synapse_eqs,
@@ -139,7 +139,7 @@ settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                } 
+                }
             },
 
         "monitors":{

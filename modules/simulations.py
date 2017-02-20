@@ -3,12 +3,12 @@ from functions import *
 def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, n_FS=[20]*10,
         n_SOM=[20]*10, PY_Vm=[-0.08]*10, FS_Vm=[-0.065]*10, SOM_Vm=[-0.065]*10,
         PY_tau_m=[0.02]*10, FS_tau_m=[0.015]*10, SOM_tau_m=[0.012]*10,
-        PY_epsp0=[0.005]*10, FS_epsp0=[0.007]*10, SOM_epsp0=[0.0005]*10, PY_d=[0.85]*10, FS_d=[0.55]*10, 
+        PY_epsp0=[0.005]*10, FS_epsp0=[0.007]*10, SOM_epsp0=[0.0005]*10, PY_d=[0.85]*10, FS_d=[0.55]*10,
         SOM_f=[0.12]*10, PY_tau_d=[0.58]*10, FS_tau_d=[0.32]*10, SOM_tau_d=[0.02]*10) -> dict:
 
 
     ret = {0:0}
-    # take in a bunch of parameters 
+    # take in a bunch of parameters
     # take in N for num of simulations
     # format each parameter to match num of simulations
     for i_sim in range(0, N):
@@ -16,7 +16,7 @@ def sim_caller(N, time, input_frequency=[50]*10, n_input=[20]*10, n_PY=[20]*10, 
         print("Sim # ", i_sim+1)
         # build a dictionary for the parameter set for that run
         param_dict = {"input_frequency":input_frequency[i_sim], "n_input":n_input[i_sim],
-                "n_PY":n_PY[i_sim], "n_FS":n_FS[i_sim], "n_SOM":n_SOM[i_sim], 
+                "n_PY":n_PY[i_sim], "n_FS":n_FS[i_sim], "n_SOM":n_SOM[i_sim],
                 "PY_Vm":PY_Vm[i_sim], "FS_Vm":FS_Vm[i_sim], "SOM_Vm":SOM_Vm[i_sim],
                 "PY_tau_m":PY_tau_m[i_sim], "FS_tau_m":FS_tau_m[i_sim], "SOM_tau_m":SOM_tau_m[i_sim],
                 "PY_epsp0":PY_epsp0[i_sim], "FS_epsp0":FS_epsp0[i_sim],
@@ -43,16 +43,16 @@ def run_simulation(network, time) -> dict:
 
     # pulling out monitors from network
     PY_dmon = network['PY_D_mon']
-    FS_dmon = network['FS_D_mon'] 
-    SOM_fmon = network['SOM_F_mon'] 
-    spike_m = network['spike_monitor'] 
-    
+    FS_dmon = network['FS_D_mon']
+    SOM_fmon = network['SOM_F_mon']
+    spike_m = network['spike_monitor']
+
     # pulling out neuron groups from network
     PY = network['PY_g']
     FS = network['FS_g']
     SOM = network['SOM_g']
 
-    # Return dict = 
+    # Return dict =
     PY_vals = PY_dmon.D[0]*PY.epsp0[0]
     FS_vals = FS_dmon.D[0]*FS.epsp0[0]
     SOM_vals = SOM_fmon.F[0]*SOM.epsp0[0]
@@ -78,7 +78,7 @@ def run_simulation(network, time) -> dict:
     return epsp_dict
 
 def init_net(arg_dict, time):
-    
+
     sim_net = Network()
     input_g = make_spike_generator(arg_dict["n_input"], np.arange(0, time, (1*second)/arg_dict["input_frequency"]))
     # uncomment the line below if you want a poisson input group instead
@@ -91,12 +91,12 @@ def init_net(arg_dict, time):
         epsp0 : volt
         epsp : volt
 
-        dD/dt = (1-D)/tau_d : 1 
+        dD/dt = (1-D)/tau_d : 1
         dF/dt = (1-F)/tau_f : 1
         tau_f : second
         tau_d : second
         d_rate : 1
-        f_rate : 1 
+        f_rate : 1
        '''
 
     PY_g = make_neuron_group(arg_dict["n_PY"], 'v>-0.045*volt', 'v=-0.05*volt', eqs,
@@ -111,7 +111,7 @@ def init_net(arg_dict, time):
     sim_net.add(SOM_g)
     print("Dict for current simulation = ", arg_dict)
     # initialize lots of vars for simulation
-    PY_g.v = arg_dict["PY_Vm"]*volt 
+    PY_g.v = arg_dict["PY_Vm"]*volt
     PY_g.Vm = arg_dict["PY_Vm"]*volt
     PY_g.tau_m =arg_dict["PY_tau_m"]*second
     PY_g.epsp0 =arg_dict["PY_epsp0"]*volt
@@ -159,7 +159,7 @@ def init_net(arg_dict, time):
     connect_synapse(syn_PY)
     connect_synapse(syn_FS)
     connect_synapse(syn_SOM)
-    
+
     sim_net.add(syn_PY)
     sim_net.add(syn_FS)
     sim_net.add(syn_SOM)
@@ -176,4 +176,3 @@ def init_net(arg_dict, time):
 
     sim_net.store("initial")
     return sim_net
-

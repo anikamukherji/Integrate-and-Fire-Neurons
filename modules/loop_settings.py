@@ -1,3 +1,8 @@
+"""
+TODO: it's hard to read code that uses the "import *" convention. consider the following:
+from equations.chance_abbott_eqs import neuron_eqs, synapse_eqs, onspike_eqs
+that way it's explicit and easy to see what each module contributes
+"""
 
 from brian2.units import *
 from equations.chance_abbott_eqs import *
@@ -67,7 +72,7 @@ loop_settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("FS", "HVA_PY"):{
                 "eqs":synapse_eqs,
@@ -85,7 +90,7 @@ loop_settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("afferents", "HVA_PY"):{
                 "eqs":synapse_eqs,
@@ -103,7 +108,7 @@ loop_settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("afferents", "FS"):{
                 "eqs":synapse_eqs,
@@ -121,7 +126,7 @@ loop_settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                }, 
+                },
 
             ("afferents", "SOM"):{
                 "eqs":synapse_eqs,
@@ -139,7 +144,7 @@ loop_settings = {
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
-                } 
+                }
             },
 
         "monitors":{
@@ -149,4 +154,3 @@ loop_settings = {
                 "afferents": 'spikes'
             }
 }
-
