@@ -55,6 +55,7 @@ synapse_eqs = '''
 # Depression and faciliation factors get incremented/decremented 
 # by their respective constants
 
+# TODO fix these equations
 onspike_eqs = '''
     G_e += w_e*D1*D2*F1*F2
     Ge_total_post += G_e

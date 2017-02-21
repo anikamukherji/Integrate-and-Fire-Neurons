@@ -9,32 +9,32 @@ settings = {
             "HVA_PY":{
                 "N":1,
                 "eqs":neuron_eqs,
-                "tau_m":0.030,
+                "tau_m":0.015,
                 "tau_e":0.002,
                 "tau_i":0.010,
-                "thresh":-0.055,
+                "thresh":-0.040,
                 "reset":-0.058,
                 "V_rest":-0.07,
                 "refract":0.00
                 },
             "FS":{
-                "N":20,
+                "N":1,
                 "eqs":neuron_eqs,
-                "tau_m":0.030,
+                "tau_m":0.007,
                 "tau_e":0.002,
                 "tau_i":0.010,
-                "thresh":-0.055,
+                "thresh":-0.030,
                 "reset":-0.058,
                 "V_rest":-0.07,
                 "refract":0.00
                 },
             "SOM":{
-                "N":20,
+                "N":1,
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
                 "tau_i":0.010,
-                "thresh":-0.055,
+                "thresh":-0.035,
                 "reset":-0.058,
                 "V_rest":-0.07,
                 "refract":0.00
@@ -112,7 +112,7 @@ settings = {
                 "d2":1.0,
                 "f1":0.0,
                 "f2":0.0,
-                "tau_D1":0.080,
+                "tau_D1":0.30,
                 "tau_D2":0.300,
                 "tau_F1":0.300,
                 "tau_F2":0.300,
@@ -128,13 +128,13 @@ settings = {
                 "on_spike":onspike_eqs,
                 "d1":1.0,
                 "d2":1.0,
-                "f1":0.2,
+                "f1":0.1,
                 "f2":0.0,
                 "tau_D1":0.300,
                 "tau_D2":0.300,
                 "tau_F1":0.300,
                 "tau_F2":0.300,
-                "w_e":0.080,
+                "w_e":0.050,
                 "w_i":0.00,
                 "tau_e":0.002,
                 "tau_i":0.010,
@@ -143,9 +143,9 @@ settings = {
             },
 
         "monitors":{
-                "HVA_PY": 'V',
-                "FS": 'V',
-                "SOM": 'V',
+                "HVA_PY": 'V Ge_total Gi_total',
+                "FS": 'V Ge_total Gi_total',
+                "SOM": 'V Ge_total Gi_total',
                 "afferents": 'spikes'
             }
 }

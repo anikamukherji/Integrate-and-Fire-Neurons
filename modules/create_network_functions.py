@@ -104,6 +104,10 @@ def create_synapses(synapse_params, neurons):
         created_syns[k].w_i = variables["w_i"]
         created_syns[k].tau_e = variables["tau_e"]*second
         created_syns[k].tau_i = variables["tau_i"]*second
+        created_syns[k].D1 = 1
+        created_syns[k].D2 = 1
+        created_syns[k].F1 = 1
+        created_syns[k].F2 = 1
         k += 1
     return created_syns
 
@@ -114,17 +118,21 @@ def create_state_monitors(monitor_params, neuron_list):
     settings["monitors"] should be passed in as the argument, with the same 
     set up as exemplified in chance_abbott_sim_settings.py
     """
-    mons = [0]*len(monitor_params)
+    # current max of 20 monitors
+    mons = [0]*20
     i = 0
     for key, val in monitor_params.items():
-
         neuron = find_neuron_with_name(neuron_list, key)
         if val == "spikes":
             mons[i] = SpikeMonitor(neuron, name="afferent_spike_mon")
             continue
-        mons[i] = StateMonitor(neuron, val, record=True, name="{}_{}_mon".format(key, val))
+        v = val.split()
+        for variable in v:
+            mons[i] = StateMonitor(neuron, variable, record=True, name="{}_{}_mon".format(key, variable))
+            i += 1
         i += 1
-    return mons
+    mons_stripped = [x for x in mons if type(x) != int]
+    return mons_stripped
 
 
 def visualise_connectivity(S):

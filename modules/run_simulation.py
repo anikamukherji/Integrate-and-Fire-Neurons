@@ -68,16 +68,29 @@ def run_loops(settings_dict, sim_length, poisson=True):
         if not poisson:
             net = create_network(mod_settings, sim_length, poisson=False)
         net.run(sim_length*second)
-        hva_mon = net['HVA_PY_V_mon']
-        fs_mon = net['FS_V_mon']
-        som_mon = net['SOM_V_mon']
-        axs[i,0].plot(hva_mon.t/ms, hva_mon.V[0])
-        axs[i,1].plot(fs_mon.t/ms, fs_mon.V[0])
-        axs[i,2].plot(som_mon.t/ms, som_mon.V[0])
+        hva_v_mon = net['HVA_PY_V_mon']
+        fs_v_mon = net['FS_V_mon']
+        som_v_mon = net['SOM_V_mon']
+        hva_ge_mon = net['HVA_PY_Ge_total_mon']
+        fs_ge_mon = net['FS_Ge_total_mon']
+        som_ge_mon = net['SOM_Ge_total_mon']
+        hva_gi_mon = net['HVA_PY_Gi_total_mon']
+        fs_gi_mon = net['FS_Gi_total_mon']
+        som_gi_mon = net['SOM_Gi_total_mon']
+        axs[i,0].plot(hva_v_mon.t/ms, hva_v_mon.V[0], 'black')
+        # axs[i,0].plot(hva_ge_mon.t/ms, hva_ge_mon.Ge_total[0], 'red')
+        # axs[i,0].plot(hva_gi_mon.t/ms, hva_gi_mon.Gi_total[0], 'blue')
+        axs[i,1].plot(fs_v_mon.t/ms, fs_v_mon.V[0], 'black')
+        # axs[i,1].plot(fs_ge_mon.t/ms, fs_ge_mon.Ge_total[0], 'red')
+        # axs[i,1].plot(fs_gi_mon.t/ms, fs_gi_mon.Gi_total[0], 'blue')
+        axs[i,2].plot(som_v_mon.t/ms, som_v_mon.V[0], 'black')
+        # axs[i,2].plot(som_ge_mon.t/ms, som_ge_mon.Ge_total[0], 'red')
+        # axs[i,2].plot(som_gi_mon.t/ms, som_gi_mon.Gi_total[0], 'blue')
 
     plt.show()
-    spike_mon = net['afferent_spike_mon']
-    plt.plot(spike_mon.t/ms)
+    # spike_mon = net['afferent_spike_mon']
+    # plt.vlines(spike_mon.t/ms, ymin=-0.040, ymax=0, 'gray', lw=3)
+    # plt.show()
 
 
 run_loops(loop_settings, 2, poisson=False)

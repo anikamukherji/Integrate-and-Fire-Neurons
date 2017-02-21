@@ -9,32 +9,32 @@ loop_settings = {
             "HVA_PY":{
                 "N":1,
                 "eqs":neuron_eqs,
-                "tau_m":0.030,
+                "tau_m":0.015,
                 "tau_e":0.002,
                 "tau_i":0.010,
-                "thresh":-0.055,
+                "thresh":-0.040,
                 "reset":-0.058,
                 "V_rest":-0.07,
                 "refract":0.00
                 },
             "FS":{
-                "N":20,
+                "N":1,
                 "eqs":neuron_eqs,
-                "tau_m":0.030,
+                "tau_m":0.007,
                 "tau_e":0.002,
                 "tau_i":0.010,
-                "thresh":-0.055,
+                "thresh":-0.030,
                 "reset":-0.058,
                 "V_rest":-0.07,
                 "refract":0.00
                     },
             "SOM":{
-                "N":20,
+                "N":1,
                 "eqs":neuron_eqs,
                 "tau_m":0.030,
                 "tau_e":0.002,
                 "tau_i":0.010,
-                "thresh":-0.055,
+                "thresh":-0.035,
                 "reset":-0.058,
                 "V_rest":-0.07,
                 "refract":0.00
@@ -43,9 +43,9 @@ loop_settings = {
 
         "afferents":{
             "N":650,
-            "modulation_rate":25,
+            "modulation_rate":10,
             "peak_rate":10,
-            "spikes_per_second":[10,20,30],
+            "spikes_per_second":[10,40,100],
             "eqs":sinusoid_rate
             },
 
@@ -143,10 +143,11 @@ loop_settings = {
             },
 
         "monitors":{
-                "HVA_PY": 'V',
-                "FS": 'V',
-                "SOM": 'V',
+                "HVA_PY": 'V Ge_total Gi_total',
+                "FS": 'V Ge_total Gi_total',
+                "SOM": 'V Ge_total Gi_total',
                 "afferents": 'spikes'
             }
 }
+
 
