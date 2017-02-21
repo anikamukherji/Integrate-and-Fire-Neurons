@@ -2,13 +2,14 @@
 from brian2 import *
 from create_network_functions import *
 from chance_abbott_sim_settings import *
+# TODO: merge the contents of "create_network_functions" into this module?
 
 
 def create_network(settings_modified, sim_length, poisson=True):
     net = Network()
 
     neuron_list = create_neurons(settings_modified["neurons"])
-    if poisson:
+    if poisson: # TODO: if statement not necessary?
         afferents = create_afferents(settings_modified["afferents"], sim_length)
     if not poisson:
         afferents = create_afferents(settings_modified["afferents"], sim_length, poisson=False)
@@ -16,10 +17,9 @@ def create_network(settings_modified, sim_length, poisson=True):
     net.add(neuron_list)
 
     # creating synapses and adding them to the network
-    synapse_list = create_synapses(settings_modified["synapses"], neuron_list) 
+    synapse_list = create_synapses(settings_modified["synapses"], neuron_list)
     net.add(synapse_list)
 
     monitor_list = create_state_monitors(settings_modified["monitors"], neuron_list)
     net.add(monitor_list)
     return net
-

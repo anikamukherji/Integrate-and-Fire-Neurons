@@ -20,11 +20,11 @@ neuron_eqs = '''
 
 
 # Each synapse has its own depression factor
-# More than one depression constant may be used 
-# For example, Chance, Nelson and Abbott tested a model with 
-# a slow factor (for contrast adaptation) and a fast 
+# More than one depression constant may be used
+# For example, Chance, Nelson and Abbott tested a model with
+# a slow factor (for contrast adaptation) and a fast
 # factor (for temporal nonlinearities)
-# Facilitation factors may also be added in similar way, but 
+# Facilitation factors may also be added in similar way, but
 # are usually implemented as additive (rather than multiplicative)
 # Conductances decay to 0, D decays to 1
 
@@ -45,23 +45,23 @@ synapse_eqs = '''
     d2 : 1
     f1 : 1
     f2 : 1
-    w_e : 1 
+    w_e : 1
     w_i : 1
      '''
 
-# On spikes the excitatory and inhibitory conductance from each 
-# synapse get added to the total excitatory and inhibitory 
+# On spikes the excitatory and inhibitory conductance from each
+# synapse get added to the total excitatory and inhibitory
 # conductance of the model cell
-# Depression and faciliation factors get incremented/decremented 
+# Depression and faciliation factors get incremented/decremented
 # by their respective constants
 
 onspike_eqs = '''
     G_e += w_e*D1*D2*F1*F2
     Ge_total_post += G_e
-    G_i += w_i*D1*D2*F1*F2 
+    G_i += w_i*D1*D2*F1*F2
     Gi_total_post += G_i
     D1 *= d1
     D2 *= d2
     F1 += f1
-    F2 += f2 
+    F2 += f2
     '''

@@ -28,7 +28,7 @@ def find_list_it(d):
     """
     Max depth of 4
     """
-    # TODO: this function allows for only one list, and should thow an error if it encounters another one?
+    # TODO: this function allows for only one list, and should throw an error if it encounters another one?
     for k0, v in d.items():
         if type(v) == list:
             return d[k], v
@@ -67,19 +67,23 @@ def run_loops(settings_dict, sim_length, poisson=True):
         """
         FIXME: If you were hoping that this re-initializes the settings dict on
         each loop, it may not be the case b/c Python binds mod_settings to
-        settings. Changes to mod_settings by default changes settings too?
+        settings. Changes to mod_settings changes settings too?
         """
         mod_settings = settings
         dpath.util.set(mod_settings, path, str(values_list[i]))
+
+        # FIXME: "poisson" is boolean, defined, and a named arg for create_network: so you don't need the if statement
         if poisson:
-            net = create_network(mod_settings, sim_length)
-        if not poisson:
+            net = create_network(mod_settings, sim_length) # TODO: sim_length is *second below, but not here (or elsewhere), is that important?
+        if not poisson: # TODO: why 2 if's and not if/else?
             net = create_network(mod_settings, sim_length, poisson=False)
+
+
         net.run(sim_length*second)
         hva_mon = net['HVA_PY_V_mon']
         fs_mon = net['FS_V_mon']
         som_mon = net['SOM_V_mon']
-        axs[i,0].plot(hva_mon.t/ms, hva_mon.V[0])
+        axs[i,0].plot(hva_mon.t/ms, hva_mon.V[0]) # TODO: please print the units for hva_mon.V to ensure that they are Volts and not V^2 or V^3 or V^(1/2) etc...
         axs[i,1].plot(fs_mon.t/ms, fs_mon.V[0])
         axs[i,2].plot(som_mon.t/ms, som_mon.V[0])
 
@@ -91,7 +95,7 @@ def run_loops(settings_dict, sim_length, poisson=True):
 run_loops(loop_settings, 2, poisson=False)
 
 """
-TODO: save (pickle) each simulation along with it's settings dictionary.
+TODO: save (pickle) each simulation output along with its settings dictionary.
 This will help identify any errors in assigning the simulation's state and
 ensure that we always can back track to the ground truth.
 

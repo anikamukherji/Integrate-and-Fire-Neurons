@@ -2,6 +2,8 @@
 from brian2.units import *
 from equations.chance_abbott_eqs import *
 from equations.thalamic_inputs import *
+# FIXME: if the units and/or thalamic stuff is unused, delete the import statements
+
 
 settings = {
     "neurons":
@@ -46,7 +48,7 @@ settings = {
             "modulation_rate":10,
             "peak_rate":10,
             "spikes_per_second":20,
-            "eqs":sinusoid_rate
+            "eqs":sinusoid_rate # FIXME: where does this get defined? Would be helpful if more explicit.
             },
 
         "synapses":{
@@ -81,7 +83,7 @@ settings = {
                 "tau_F1":0.300,
                 "tau_F2":0.300,
                 "w_e":0.00,
-                "w_i":0.02,
+                "w_i":0.02, # TODO: sould be bigger than SOM->PY synapse weight
                 "tau_e":0.002,
                 "tau_i":0.010,
                 "delay":0
@@ -119,7 +121,7 @@ settings = {
                 "w_e":0.02,
                 "w_i":0.00,
                 "tau_e":0.002,
-                "tau_i":0.010,
+                "tau_i":0.010,"w_e":0.02,
                 "delay":0
                 },
 
