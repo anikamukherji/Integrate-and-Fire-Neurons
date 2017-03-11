@@ -50,14 +50,13 @@ def create_afferents(afferent_params, sim_length_seconds, poisson=True):
     num = afferent_params["N"]
     if poisson:
         mod_rate = afferent_params["modulation_rate"]
-        peak = afferent_params["modulation_rate"]
+        peak = afferent_params["peak_rate"]
         equations = afferent_params["eqs"]
         afferents = NeuronGroup(num, model=equations, threshold='rand()<rates*dt', 
                 method='euler', name="afferents")
         afferents.modulation_rate = mod_rate
         afferents.peak_rate = peak
     else:
-        num = afferent_params["N"]
         spikes_sec = int(afferent_params["spikes_per_second"])
         sec_spikes = 1/spikes_sec
         spike_arr = np.arange(0,sim_length_seconds,sec_spikes)
@@ -89,7 +88,7 @@ def create_synapses(synapse_params, neurons):
                 method='euler', on_pre = variables["on_spike"], 
                 name="{}_{}_synapse".format(pre_neuron_name, post_neuron_name))
         if pre_neuron_name == "afferents":
-            created_syns[k].connect(p=0.3)
+            created_syns[k].connect()
         else:
             created_syns[k].connect()
         created_syns[k].d1 = variables["d1"],
