@@ -88,9 +88,9 @@ def create_synapses(synapse_params, neurons):
                 method='euler', on_pre = variables["on_spike"], 
                 name="{}_{}_synapse".format(pre_neuron_name, post_neuron_name))
         if pre_neuron_name == "afferents":
-            created_syns[k].connect()
+            created_syns[k].connect(p=0.25)
         else:
-            created_syns[k].connect()
+            created_syns[k].connect(p=0.25)
         created_syns[k].d1 = variables["d1"],
         created_syns[k].d2 = variables["d2"],
         created_syns[k].f1 = variables["f1"],
