@@ -41,9 +41,9 @@ loop_settings = {
 
         "afferents":{
             "N":800,
-            "modulation_rate":[4,10,30],
+            "modulation_rate":10,
             "peak_rate":10,
-            "spikes_per_second":20,
+            "spikes_per_second":[4,10,20],
             "eqs":sinusoid_rate
             },
 

@@ -14,13 +14,16 @@ import time
 ### Increment RUN_NUM ##
 ### everytime you run ##
 ### A simulation #######
+########################
+
 RUN_NUM = 0
 
-def run_net_and_save(net, sim_length, description):
+def run_net_and_save(net, settings_dict, sim_length, description):
     global RUN_NUM
-    net.run(sim_length)
-    pickle.dump(net.get_states(), open("./networks/run_{}_".format(RUN_NUM) + time.strftime("%d/%m/%Y") + ".p", "wb"))
-    with open("../networks/net_descriptions.txt", "w") as f:
+    net.run(sim_length*second)
+    pickle.dump(net.get_states(), open("../networks/run_{}_".format(RUN_NUM) + time.strftime("%d-%m-%Y") + ".p", "wb"))
+    pickle.dump(settings_dict, open("../networks/run_{}_".format(RUN_NUM) + time.strftime("%d-%m-%Y") + "_settings" + ".p", "wb"))
+    with open("../networks/net_descriptions.txt", "a") as f:
         f.write("\n")
         f.write("Run #{}: ".format(RUN_NUM) + time.strftime("%d/%m/%Y"))
         f.write(description)
@@ -54,7 +57,7 @@ def find_list_it(d):
 
 
 
-def run_loops(settings_dict, sim_length, description, poisson=True):
+def run_loops(settings_dict, sim_length, description, poisson_on=True):
     """
     Run several simulations based on settings_dict passed containing a list
     of values as the key for the parameter you want to modify per simulation
@@ -69,11 +72,10 @@ def run_loops(settings_dict, sim_length, description, poisson=True):
     for i in range(len(values)):
         mod_settings = settings.copy()
         dpath.util.set(mod_settings, path, values[i])
-        poisson_on = poisson
         net = create_network(mod_settings, sim_length, poisson=poisson_on)
-        run_net_and_save(net, sim_length, description)
+        run_net_and_save(net, mod_settings, sim_length, description)
 
 
 
-# run_loops(loop_settings, 1*second, "Test simulation 3.26.17", poisson=True)
+# run_loops(loop_settings, 1, "Test with new file names with pulses", poisson_on=False)
 
