@@ -199,6 +199,76 @@ def average_values(pickle_file, value, neuron_type):
     # print(averages)
     return averages
 
+def plot_responses(pickle_file, neuron_type, neuron_index, value):
+    net = unpickle_net(pickle_file)
+    if value == 'Ge':
+        key = "{}_Ge_total_mon".format(neuron_type)
+        key2 = "Ge_total"
+    if value == 'Gi':
+        key = "{}_Gi_total_mon".format(neuron_type)
+        key2 = "Gi_total"
+    if value == 'V':
+        key = "{}_V_mon".format(neuron_type)
+        key2 = "V"
+    total_arr = np.array(net[key][key2])
+    neuron_vals = [x[neuron_index] for x in total_arr]
+    spikes = sorted(list(set(extract_presynaptic_spikes("none", "SOM", neuron_index,
+        net=net)/second)))
+    # print(neuron_vals)
+    t_mon = net['{}_V_mon'.format(neuron_type)]['t']
+    # print(t_mon)
+    plt.plot(t_mon, neuron_vals)
+    afters, befores = peaks_and_troughs(spikes*second, neuron_vals)
+
+    for s, b, a in zip(spikes, befores, afters):
+        print(s)
+        print(b)
+        print(a)
+        plt.axhline(y=b, xmin=s-0.05, xmax=s, color="black")
+        plt.axhline(y=a, xmin=s, xmax=s+0.05, color="black")
+    plt.show()
+
+
+def peaks_and_troughs(spike_times, mon):
+    """
+    time 0 = 0th index
+    1st index = 0.1 ms into simulation
+    if you want value at 400 ms -> 4000 index
+    keep in mind that 400 ms = 0.4 seconds
+    So seconds to index -> seconds x 10000
+    """
+
+    # we don't care if there are a bunch of afferents all firing together
+    spike_times = sorted(list(set(spike_times/second)))
+    befores = []
+    afters = []
+
+    for i,t in enumerate(spike_times):
+        # get rid of pesky units
+        t = t/second
+        # use floor in case of precision wackiness
+        spike_index = math.floor(t*10000)
+
+        # get baseline right before spike
+        if t == 0:
+            before = mon[0]
+        else:
+            before = np.mean(np.array(mon[spike_index-10:spike_index+1]))
+
+        # get max value after the spike 
+        if i+ 1 != len(spike_times):
+            next_spike_index = math.floor(spike_times[i+1]*10000)
+            after = max(np.array(mon[spike_index:next_spike_index]))
+        else:
+            after = max(np.array(mon[spike_index:]))
+
+        befores.append(before)
+        afters.append(after)
+    return afters, befores
+    
+
+
+
 # global_peak_trough_ratio("../networks/run_0.p", "HVA_PY")
 # global_peak_trough_ratio("../networks/run_0.p", "FS")
 # global_peak_trough_ratio("../networks/run_0.p", "SOM")
@@ -208,8 +278,7 @@ def average_values(pickle_file, value, neuron_type):
 # plot_everything(["../networks/run_0_30-03-2017.p",
     # "../networks/run_1_30-03-2017.p",
     # "../networks/run_2_30-03-2017.p"])
-pulse_ratio("../networks/run_2_30-03-2017.p", "FS",0, "V")
-pulse_ratio("../networks/run_2_30-03-2017.p", "SOM",0, "V")
+plot_responses("../networks/run_2_30-03-2017.p", "SOM",0, "V")
 
 
 # this function is not all that useful honestly
