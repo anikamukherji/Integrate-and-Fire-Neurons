@@ -1,5 +1,26 @@
 
 from brian2 import *
+from create_network_functions import *
+from chance_abbott_sim_settings import settings
+
+
+def create_network(settings_modified, sim_length, poisson=True):
+    net = Network()
+
+    neuron_list = create_neurons(settings_modified["neurons"])
+    poisson_on = poisson
+    afferents = create_afferents(settings_modified["afferents"], sim_length, poisson=poisson_on)
+    neuron_list.append(afferents)
+    net.add(neuron_list)
+
+    # creating synapses and adding them to the network
+    synapse_list = create_synapses(settings_modified["synapses"], neuron_list)
+    net.add(synapse_list)
+
+    monitor_list = create_state_monitors(settings_modified["monitors"], neuron_list)
+    net.add(monitor_list)
+    return net
+
 
 def find_neuron_with_name(neuron_array, str_name):
     """
@@ -14,21 +35,21 @@ def find_neuron_with_name(neuron_array, str_name):
 def create_neurons(neuron_params):
     """
     Returns a list of neurons initialized with valued specified in params
-    settings["neurons"] should be passed in as the argument, with the same 
+    settings["neurons"] should be passed in as the argument, with the same
     set up as exemplified in chance_abbott_sim_settings.py
     """
     # fill list of proper size with 0's
     neuron_list = [0]*len(neuron_params)
     i = 0
     for neuron, vals in neuron_params.items():
-        
+
         N = vals["N"]
-        eqs = vals["eqs"] 
+        eqs = vals["eqs"]
         t = 'V>=' + str(vals["thresh"]) + '*volt'
         res = 'V=' + str(vals["reset"]) + '*volt'
         v_init = vals["V_rest"]
         refract = vals["refract"]*second
-        neuron_list[i] = NeuronGroup(N, model=eqs, threshold=t, 
+        neuron_list[i] = NeuronGroup(N, model=eqs, threshold=t,
                 reset=res,  method='euler', refractory=refract, name=neuron)
         neuron_list[i].tau_m = vals["tau_m"]*second
         neuron_list[i].tau_e_model = vals["tau_e"]*second
@@ -40,11 +61,11 @@ def create_neurons(neuron_params):
 
         i += 1
     return neuron_list
-        
+
 def create_afferents(afferent_params, sim_length_seconds, poisson=True):
     """
     Returns a neuron group initialized with values specified in params
-    settings["afferents"] should be passed in as the argument, with the same 
+    settings["afferents"] should be passed in as the argument, with the same
     set up as exemplified in chance_abbott_sim_settings.py
     """
     num = afferent_params["N"]
@@ -52,7 +73,7 @@ def create_afferents(afferent_params, sim_length_seconds, poisson=True):
         mod_rate = afferent_params["modulation_rate"]
         peak = afferent_params["peak_rate"]
         equations = afferent_params["eqs"]
-        afferents = NeuronGroup(num, model=equations, threshold='rand()<rates*dt', 
+        afferents = NeuronGroup(num, model=equations, threshold='rand()<rates*dt',
                 method='euler', name="afferents")
         afferents.modulation_rate = mod_rate
         afferents.peak_rate = peak
@@ -66,12 +87,12 @@ def create_afferents(afferent_params, sim_length_seconds, poisson=True):
             neuron_nums += [i]*len(spike_arr)
         afferents = SpikeGeneratorGroup(num, neuron_nums,spike_list*num*second, name="afferents")
     return afferents
-    
-    
+
+
 def create_synapses(synapse_params, neurons):
     """
     Returns a list of synapses initialized with values specified in params
-    settings["synapses"] should be passed in as the argument, with the same 
+    settings["synapses"] should be passed in as the argument, with the same
     set up as exemplified in chance_abbott_sim_settings.py
     """
     # fill list of proper size with 0's
@@ -84,8 +105,8 @@ def create_synapses(synapse_params, neurons):
         pre_neuron = find_neuron_with_name(neurons, pre_neuron_name)
         post_neuron_name = s[1]
         post_neuron = find_neuron_with_name(neurons, post_neuron_name)
-        created_syns[k] = Synapses(pre_neuron, post_neuron, model = variables["eqs"], 
-                method='euler', on_pre = variables["on_spike"], 
+        created_syns[k] = Synapses(pre_neuron, post_neuron, model = variables["eqs"],
+                method='euler', on_pre = variables["on_spike"],
                 name="{}_{}_synapse".format(pre_neuron_name, post_neuron_name))
         if pre_neuron_name == "afferents":
             created_syns[k].connect(p=0.25)
@@ -110,11 +131,11 @@ def create_synapses(synapse_params, neurons):
         k += 1
     return created_syns
 
-    
+
 def create_state_monitors(monitor_params, neuron_list):
     """
     Returns a list of monitors initialized with values specified in params
-    settings["monitors"] should be passed in as the argument, with the same 
+    settings["monitors"] should be passed in as the argument, with the same
     set up as exemplified in chance_abbott_sim_settings.py
     """
     # current max of 20 monitors
@@ -154,14 +175,3 @@ def visualise_connectivity(S):
     xlabel('Source neuron index')
     ylabel('Target neuron index')
     show()
-
-
-
-
-
-
-
-
-
-
-
