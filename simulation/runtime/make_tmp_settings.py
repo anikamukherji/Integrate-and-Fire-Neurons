@@ -24,3 +24,10 @@ process:
     * return the run_settings dictionary, and the address of the
       list (for looping)
 """
+
+import settings.default_settings as default_dict
+import settings.test_stp_g as sim_dict
+
+
+print(default_dict)
+print(sim_dict)
