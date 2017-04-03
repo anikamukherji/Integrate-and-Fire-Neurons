@@ -1,7 +1,7 @@
 
 from equations.chance_abbott_eqs import neuron_eqs, synapse_eqs, onspike_eqs, sinusoid_rate
 
-settings = {
+loop_settings = {
     "neurons":
         {
             "HVA_PY":{
@@ -40,9 +40,9 @@ settings = {
             },
 
         "afferents":{
-            "N":1,
-            "modulation_rate":10,
-            "peak_rate":10,
+            "N":100,
+            "modulation_rate":[0, 1, 5, 10, 50],
+            "peak_rate":25,
             "spikes_per_second":20,
             "eqs":sinusoid_rate
             },
@@ -65,7 +65,7 @@ settings = {
                 "tau_e":0.002,
                 "tau_i":0.0094,     # (1)
                 "delay":0
-                }, 
+                },
 
             ("FS", "HVA_PY"):{
                 "eqs":synapse_eqs,
@@ -83,7 +83,7 @@ settings = {
                 "tau_e":0.002,
                 "tau_i":0.011,      # (1)
                 "delay":0
-                }, 
+                },
 
             ("afferents", "HVA_PY"):{
                 "eqs":synapse_eqs,
@@ -101,7 +101,7 @@ settings = {
                 "tau_e":0.002,      # (6)
                 "tau_i":0.010,      # (2)
                 "delay":0
-                }, 
+                },
 
             ("afferents", "FS"):{
                 "eqs":synapse_eqs,
@@ -119,7 +119,7 @@ settings = {
                 "tau_e":0.002,      # (6)
                 "tau_i":0.008,      # (6)
                 "delay":0
-                }, 
+                },
 
             ("afferents", "SOM"):{
                 "eqs":synapse_eqs,
@@ -137,7 +137,7 @@ settings = {
                 "tau_e":0.002,      # (6)
                 "tau_i":0.008,      # (6)
                 "delay":0
-                } 
+                }
             },
 
         "monitors":{
@@ -166,6 +166,6 @@ settings = {
 #       in mouse presubiculum" (2015)
 #       Nassar et al.
 # 6. "Membrane Properties and the Balance between Excitation and Inhibition
-#       Control Gamma-Frequency Oscillations Arising from Feedback Inhibition" 
+#       Control Gamma-Frequency Oscillations Arising from Feedback Inhibition"
 #       (2012)
 #       Economo, White

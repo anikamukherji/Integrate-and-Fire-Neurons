@@ -4,7 +4,7 @@ from create_network import create_network
 import matplotlib.pyplot as plt
 from chance_abbott_sim_settings import settings
 from loop_settings import loop_settings
-from functools import reduce  
+from functools import reduce
 import operator
 import dpath.util
 
@@ -18,12 +18,12 @@ def find_list(d):
 def find_list_recursive(d, path):
     for k,v in d.items():
         if isinstance(v,list):
-            return v, path 
+            return v, path
             print(v)
         if isinstance(v,dict):
             path += k
             path += "/"
-            find_list(d[k], path) 
+            find_list(d[k], path)
 
 def find_list_it(d):
     """
@@ -33,17 +33,17 @@ def find_list_it(d):
         if type(v) == list:
             return d[k], v
         if type(v) != dict:
-           continue 
+           continue
         for k1, v in d[k0].items():
             if type(v) == list:
                 return "{}/{}".format(k0,k1), v
             if type(v) != dict:
-                continue 
+                continue
             for k2, v in d[k0][k1].items():
                 if type(v) == list:
                     return "{}/{}/{}".format(k0,k1,k2), v
                 if type(v) != dict:
-                    continue 
+                    continue
                 for k3, v in d[k0][k1][k2].items():
                     if type(v) == list:
                         return "{}/{}/{}/{}".format(k0,k1,k2,k3), v
@@ -54,17 +54,17 @@ def find_list_it(d):
 def run_loops(settings_dict, sim_length, poisson=True):
 
     (path, values) = find_list_it(settings_dict)
-
+    # TODO get rid of the following 4 lines b/c plotting will go elsewhere
     f, axs = plt.subplots(len(values), 3)
-    axs[0,0].set_title("G_tau = 1 ms,  D_tau = 10 ms, d = 0.8")
-    axs[0,1].set_title("G_tau = 1 ms,  D_tau = 25 ms, d = 0.8")
-    axs[0,2].set_title("G_tau = 1 ms, D_tau = 75 ms, d = 0.8")
+    #axs[0,0].set_title("G_tau = 1 ms,  D_tau = 10 ms, d = 0.8")
+    #axs[0,1].set_title("G_tau = 1 ms,  D_tau = 25 ms, d = 0.8")
+    #axs[0,2].set_title("G_tau = 1 ms, D_tau = 75 ms, d = 0.8")
     for i in range(len(values)):
         mod_settings = settings.copy()
         dpath.util.set(mod_settings, path, values[i])
         poisson_on = poisson
         net = create_network(mod_settings, sim_length, poisson=poisson_on)
-        net.run(sim_length*second)
+        net.run(sim_length*second) # TODO save data and put the figure generateion somewhere else
         hva_v_mon = net['HVA_PY_V_mon']
         fs_v_mon = net['FS_V_mon']
         som_v_mon = net['SOM_V_mon']
@@ -76,15 +76,15 @@ def run_loops(settings_dict, sim_length, poisson=True):
         hva_gi_mon = net['HVA_PY_Gi_total_mon']
         fs_gi_mon = net['FS_Gi_total_mon']
         som_gi_mon = net['SOM_Gi_total_mon']
-        # axs[i,0].plot(hva_v_mon.t/ms, hva_v_mon.V[0], 'black')
+        axs[i,0].plot(hva_v_mon.t/ms, hva_v_mon.V[0], 'black') # TODO make this more flexible, just plot everything (on separate figures)
         # print(hva_v_mon.V[0][5])
-        axs[i,0].plot(hva_ge_mon.t/ms, hva_ge_mon.Ge_total[0], 'red')
+        # axs[i,0].plot(hva_ge_mon.t/ms, hva_ge_mon.Ge_total[0], 'red')
         # axs[i,0].plot(hva_gi_mon.t/ms, hva_gi_mon.Gi_total[0], 'blue')
-        # axs[i,1].plot(fs_v_mon.t/ms, fs_v_mon.V[0], 'black')
-        axs[i,1].plot(fs_ge_mon.t/ms, fs_ge_mon.Ge_total[0], 'red')
+        axs[i,1].plot(fs_v_mon.t/ms, fs_v_mon.V[0], 'black')
+        # axs[i,1].plot(fs_ge_mon.t/ms, fs_ge_mon.Ge_total[0], 'red')
         # axs[i,1].plot(fs_gi_mon.t/ms, fs_gi_mon.Gi_total[0], 'blue')
-        # axs[i,2].plot(som_v_mon.t/ms, som_v_mon.V[0], 'black')
-        axs[i,2].plot(som_ge_mon.t/ms, som_ge_mon.Ge_total[0], 'red')
+        axs[i,2].plot(som_v_mon.t/ms, som_v_mon.V[0], 'black')
+        # axs[i,2].plot(som_ge_mon.t/ms, som_ge_mon.Ge_total[0], 'red')
         # axs[i,2].plot(som_gi_mon.t/ms, som_gi_mon.Gi_total[0], 'blue')
 
     plt.show()
@@ -93,6 +93,4 @@ def run_loops(settings_dict, sim_length, poisson=True):
     # plt.show()
 
 
-run_loops(loop_settings, 2, poisson=False)
-
-
+run_loops(loop_settings, 2, poisson=True)
