@@ -3,10 +3,8 @@ from brian2 import *
 from create_network import create_network
 from chance_abbott_sim_settings import settings
 from loop_settings import loop_settings
-import operator
 import dpath.util
 import dill as pickle
-import weakref
 import time
 
 ########################
