@@ -25,9 +25,10 @@ process:
       list (for looping)
 """
 
-import settings.default_settings as default_dict
-import settings.test_stp_g as sim_dict
+from hvasim.simulation.equations.chance_abbott_eqs import neuron_eqs, synapse_eqs, onspike_eqs, sinusoid_rate
+import hvasim.simulation.settings.default_settings as default_dict
+import hvasim.simulation.settings.test_stp_g as sim_dict
 
 
-print(default_dict)
-print(sim_dict)
+print(default_dict.settings)
+print(sim_dict.settings)

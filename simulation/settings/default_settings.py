@@ -1,6 +1,3 @@
-
-from equations.chance_abbott_eqs import neuron_eqs, synapse_eqs, onspike_eqs, sinusoid_rate
-
 settings = {
     "neurons":
         {
