@@ -1,3 +1,5 @@
+from equations import neuron_eqs, synapse_eqs, onspike_eqs, sinusoid_rate
+
 settings = {
     "neurons":
         {
