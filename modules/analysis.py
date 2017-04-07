@@ -224,8 +224,8 @@ def plot_responses(pickle_file, neuron_type, neuron_index, value):
         print(s)
         print(b)
         print(a)
-        plt.axhline(y=b, xmin=s-0.05, xmax=s, color="black")
-        plt.axhline(y=a, xmin=s, xmax=s+0.05, color="black")
+        plt.plot(s,b,".k")
+        plt.plot(s+0.005,a,".k")
     plt.show()
 
 
@@ -253,7 +253,7 @@ def peaks_and_troughs(spike_times, mon):
         if t == 0:
             before = mon[0]
         else:
-            before = np.mean(np.array(mon[spike_index-10:spike_index+1]))
+            before = min(np.array(mon[spike_index-10:spike_index]))
 
         # get max value after the spike 
         if i+ 1 != len(spike_times):
@@ -264,8 +264,11 @@ def peaks_and_troughs(spike_times, mon):
 
         befores.append(before)
         afters.append(after)
+    print("befores: {}".format(befores))
+    print("afters: {}".format(afters))
     return afters, befores
-    
+
+
 
 
 
