@@ -39,17 +39,17 @@ def find_list_it(d):
         if type(v) == list:
             return d[k], v
         if type(v) != dict:
-           continue 
+           continue
         for k1, v in d[k0].items():
             if type(v) == list:
                 return "{}/{}".format(k0,k1), v
             if type(v) != dict:
-                continue 
+                continue
             for k2, v in d[k0][k1].items():
                 if type(v) == list:
                     return "{}/{}/{}".format(k0,k1,k2), v
                 if type(v) != dict:
-                    continue 
+                    continue
                 for k3, v in d[k0][k1][k2].items():
                     if type(v) == list:
                         return "{}/{}/{}/{}".format(k0,k1,k2,k3), v
@@ -68,7 +68,6 @@ def run_loops(settings_dict, sim_length, description, poisson_on=True):
     """
 
     (path, values) = find_list_it(settings_dict)
-
     for i in range(len(values)):
         mod_settings = settings.copy()
         dpath.util.set(mod_settings, path, values[i])
@@ -79,3 +78,5 @@ def run_loops(settings_dict, sim_length, description, poisson_on=True):
 
 # run_loops(loop_settings, 1, "Test with new file names with pulses", poisson_on=False)
 
+
+# run_loops(loop_settings, 2, poisson_on=True)
