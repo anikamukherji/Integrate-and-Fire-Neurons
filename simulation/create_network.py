@@ -1,7 +1,61 @@
+# TODO: rename module to "create_simulation" and delete functions.py?
 
 from brian2 import *
-from create_network_functions import *
-from chance_abbott_sim_settings import settings
+from make_run_settings import create_run_settings
+import settings_default
+import dpath.util
+import dill as pickle
+import time
+
+""" IMPORTANT
+ Increment RUN_NUM everytime you run a simulation
+"""
+RUN_NUM = 0 # FIXME: change to method that doens't require hard coding
+
+
+def run_net_and_save(net, settings_dict, sim_length, description):
+    global RUN_NUM  # QUESTION: Is RUN_NUM global already, or has correct scope?
+    net.run(sim_length*second)
+    pickle.dump(net.get_states(), open("../networks/run_{}_".format(RUN_NUM) + time.strftime("%d-%m-%Y") + ".p", "wb"))
+    pickle.dump(settings_dict, open("../networks/run_{}_".format(RUN_NUM) + time.strftime("%d-%m-%Y") + "_settings" + ".p", "wb"))
+    with open("../networks/net_descriptions.txt", "a") as f:
+        f.write("\n")
+        f.write("Run #{}: ".format(RUN_NUM) + time.strftime("%d/%m/%Y"))
+        f.write(description)
+    RUN_NUM += 1
+    print("Assign RUN_NUM to {} if you plan on running simulations later today".format(RUN_NUM))
+
+
+def run_loops(sim_settings, sim_length, description, poisson_on=True):
+    """
+    Run several simulations based on sim_settings passed containing a list
+    of values as the key for the parameter you want to modify per simulation
+
+    Each simulation will be pickled and saved to networks directory
+
+    Pass in string description for distinguishing purpose of simulation
+    """
+
+    # load the default settings but override with the sim_settings where present
+    (list_path, run_settings) = create_run_settings(settings_default.settings,
+                                                    sim_settings)
+
+    # pull out the list of params (if list was present)
+    if len(list_path) > 0:
+        param_list_vals = dpath.util.get(run_settings, list_path)
+
+    # loop over params in the list and run the simulation
+    if len(list_path) == 0:
+        loop_settings = run_settings.copy()
+        net = create_network(loop_settings, sim_length, poisson=poisson_on)
+        run_net_and_save(net, loop_settings, sim_length, description)
+    else:
+        for i in range(len(param_list_vals)):
+            loop_settings = run_settings.copy()
+            dpath.util.set(loop_settings, list_path, param_list_vals[i])
+            net = create_network(loop_settings, sim_length, poisson=poisson_on)
+            run_net_and_save(net, loop_settings, sim_length, description)
+
 
 
 def create_network(settings_modified, sim_length, poisson=True):
@@ -32,6 +86,7 @@ def find_neuron_with_name(neuron_array, str_name):
     print("Neuron not in this list")
     return None
 
+
 def create_neurons(neuron_params):
     """
     Returns a list of neurons initialized with valued specified in params
@@ -61,6 +116,7 @@ def create_neurons(neuron_params):
 
         i += 1
     return neuron_list
+
 
 def create_afferents(afferent_params, sim_length_seconds, poisson=True):
     """
@@ -154,7 +210,7 @@ def create_state_monitors(monitor_params, neuron_list):
     mons_stripped = [x for x in mons if type(x) != int]
     return mons_stripped
 
-
+# TODO: move to analysis code?
 def visualise_connectivity(S):
     Ns = len(S.source)
     Nt = len(S.target)
