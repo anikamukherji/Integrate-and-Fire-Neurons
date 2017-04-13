@@ -49,6 +49,7 @@ settings = {
 
     "afferents": {
         "N": None,
+        "use_poisson": None,
         "modulation_rate": None,
         "peak_rate": None,
         "spikes_per_second": None,

@@ -55,6 +55,7 @@ settings = {
 
     "afferents": {
         "N": 800,
+        "use_poisson": True,
         "modulation_rate": 50,
         "peak_rate": 50,
         "spikes_per_second": 20,

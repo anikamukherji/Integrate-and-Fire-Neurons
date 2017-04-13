@@ -16,7 +16,7 @@ import settings_test_stp as sim_settings
 # define other things here
 sim_length = 0.5  # seconds
 use_poisson = False
-description = "testing the new simulation codebase"
+description = """ testing the new simulation codebase """
 
 """  END USER DEFINED STUFF  """
 
@@ -25,9 +25,9 @@ description = "testing the new simulation codebase"
 
 
 """ don't mess with the stuff below """
-from create_network import run_loops
+from create_network import run_simulations
 
-run_loops(sim_settings.settings,
-          sim_length,
-          description,
-          poisson_on=use_poisson)
+run_simulations(sim_settings.settings,
+                sim_length,
+                description,
+                )

@@ -7,15 +7,14 @@ import dpath.util
 import dill as pickle
 import time
 
-""" IMPORTANT
- Increment RUN_NUM everytime you run a simulation
-"""
-RUN_NUM = 0 # FIXME: change to method that doens't require hard coding
 
+def run_net_and_save(settings_dict, sim_length, description):
 
-def run_net_and_save(net, settings_dict, sim_length, description):
-    global RUN_NUM  # QUESTION: Is RUN_NUM global already, or has correct scope?
+    # run the simulation
+    net = create_network(settings_dict, sim_length)
     net.run(sim_length*second)
+
+    # save the simulation
     pickle.dump(net.get_states(), open("../networks/run_{}_".format(RUN_NUM) + time.strftime("%d-%m-%Y") + ".p", "wb"))
     pickle.dump(settings_dict, open("../networks/run_{}_".format(RUN_NUM) + time.strftime("%d-%m-%Y") + "_settings" + ".p", "wb"))
     with open("../networks/net_descriptions.txt", "a") as f:
@@ -26,7 +25,7 @@ def run_net_and_save(net, settings_dict, sim_length, description):
     print("Assign RUN_NUM to {} if you plan on running simulations later today".format(RUN_NUM))
 
 
-def run_loops(sim_settings, sim_length, description, poisson_on=True):
+def simulate_network(sim_settings, sim_length, description):
     """
     Run several simulations based on sim_settings passed containing a list
     of values as the key for the parameter you want to modify per simulation
@@ -40,20 +39,18 @@ def run_loops(sim_settings, sim_length, description, poisson_on=True):
     (list_path, run_settings) = create_run_settings(settings_default.settings,
                                                     sim_settings)
 
-    # pull out the list of params (if list was present)
-    if len(list_path) > 0:
-        param_list_vals = dpath.util.get(run_settings, list_path)
 
     # loop over params in the list and run the simulation
     if len(list_path) == 0:
         loop_settings = run_settings.copy()
-        net = create_network(loop_settings, sim_length, poisson=poisson_on)
+
         run_net_and_save(net, loop_settings, sim_length, description)
     else:
-        for i in range(len(param_list_vals)):
+        param_list_vals = dpath.util.get(run_settings, list_path)
+        for i_run in range(len(param_list_vals)):
             loop_settings = run_settings.copy()
-            dpath.util.set(loop_settings, list_path, param_list_vals[i])
-            net = create_network(loop_settings, sim_length, poisson=poisson_on)
+            dpath.util.set(loop_settings, list_path, param_list_vals[i_run])
+            net = create_network(loop_settings, sim_length)
             run_net_and_save(net, loop_settings, sim_length, description)
 
 

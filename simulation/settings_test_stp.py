@@ -61,6 +61,7 @@ settings = {
 
     "afferents": {
         "N": 1,
+        "use_poisson": False,
         "modulation_rate": None,
         "peak_rate": None,
         "spikes_per_second": [1, 10, 50, 100],  # pulse train frequencies
