@@ -17,16 +17,17 @@ from hvasim import run_simulations
 #######################################
 # USER-DEFINE: THE SIMULATION SETTINGS
 # import YYYYYY as sim_settings (YYYYY = sim_settings module name)
-import settings_test_stp as sim_settings
+import settings_default as sim_settings
 
 
 ######################################
 # USER-DEFINE: ENTER A  DESCRIPTION  #
 ######################################
-description = """ converting the stp_test settings dict back to it's original
-form. Now there are three different types of STP onto the HVA neurons.
+description = """ Using the default settings file to explore the
+dependence of STP on modulation rate for different types of afferent synapses
+(PY->PY, PY->FS, PY->SOM).
 
-This model lacks the double Ge decay (from the original model).
+The interneurons in the HVA do not contact the PY cells (p_connect=0)
 """
 
 ########################################

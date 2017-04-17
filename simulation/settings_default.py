@@ -56,7 +56,7 @@ settings = {
     "afferents": {
         "N": 800,
         "use_poisson": True,
-        "modulation_rate": 50,
+        "modulation_rate": [0, 5, 10, 25, 50, 100],
         "peak_rate": 50,
         "spikes_per_second": None,
         "eqs": sinusoid_rate,

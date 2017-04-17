@@ -183,17 +183,24 @@ def create_afferents(afferent_params):
     num = afferent_params["N"]
     use_poisson = afferent_params["use_poisson"]
     if use_poisson:
-        mod_rate = afferent_params["modulation_rate"]
-        peak = afferent_params["peak_rate"]
-        equations = afferent_params["eqs"]
+        # mod_rate = 0 is degenerate b/c sin(0)=0. This hard codes DC for 0Hz
+        if afferent_params["modulation_rate"] == 0:
+            afferent_model = '''
+            rates = peak_rate*Hz : Hz
+            peak_rate : 1
+            modulation_rate : 1
+            '''
+        else:
+            afferent_model = afferent_params["eqs"]
+
         afferents = brian.NeuronGroup(num,
-                                      model=equations,
+                                      model=afferent_model,
                                       threshold='rand()<rates*dt',
                                       method='euler',
                                       name="afferents"
                                       )
-        afferents.modulation_rate = mod_rate
-        afferents.peak_rate = peak
+        afferents.modulation_rate = afferent_params["modulation_rate"]
+        afferents.peak_rate = afferent_params["peak_rate"]
     else:
         sim_length_sec = afferent_params["sim_time"]
         isi_sec = 1 / afferent_params["spikes_per_second"]
