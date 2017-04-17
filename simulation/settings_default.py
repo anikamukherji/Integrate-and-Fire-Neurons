@@ -29,7 +29,7 @@ settings = {
         },
 
         "FS": {
-            "N": 3,
+            "N": 1,
             "eqs": neuron_eqs,
             "tau_m": 0.010,      # (1)
             "tau_e": 0.002,      # (6)
@@ -41,7 +41,7 @@ settings = {
         },
 
         "SOM": {
-            "N": 3,
+            "N": 1,
             "eqs": neuron_eqs,
             "tau_m": 0.026,      # (1)
             "tau_e": 0.002,      # (2)
@@ -58,7 +58,7 @@ settings = {
         "use_poisson": True,
         "modulation_rate": 50,
         "peak_rate": 50,
-        "spikes_per_second": 20,
+        "spikes_per_second": None,
         "eqs": sinusoid_rate,
         "sim_time": 2
     },
@@ -67,7 +67,7 @@ settings = {
         ("SOM", "HVA_PY"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
-            "p_connect": 1,
+            "p_connect": 0,
             "d1": 0.5,
             "d2": 1.0,
             "f1": 0.0,
@@ -86,7 +86,7 @@ settings = {
         ("FS", "HVA_PY"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
-            "p_connect": 1,
+            "p_connect": 0,
             "d1": 0.4,
             "d2": 1.0,
             "f1": 0.0,
@@ -96,7 +96,7 @@ settings = {
             "tau_F1": 0.300,
             "tau_F2": 0.300,
             "w_e": 0.00,
-            "w_i": 0.0025,
+            "w_i": 0.005,
             "tau_e": 0.002,
             "tau_i": 0.011,      # (1)
             "delay": 0
@@ -105,16 +105,16 @@ settings = {
         ("afferents", "HVA_PY"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
-            "p_connect": 0.5,
-            "d1": 0.8,
+            "p_connect": 0.6,
+            "d1": 0.7,
             "d2": 1.0,
             "f1": 0.0,
             "f2": 0.0,
-            "tau_D1": 0.020,     # (2)
+            "tau_D1": 0.200,
             "tau_D2": 0.300,
             "tau_F1": 1000,
             "tau_F2": 0.300,
-            "w_e": 0.009,
+            "w_e": 0.010,
             "w_i": 0.00,
             "tau_e": 0.002,      # (6)
             "tau_i": 0.010,      # (2)
@@ -124,38 +124,38 @@ settings = {
         ("afferents", "FS"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
-            "p_connect": 0.5,
-            "d1": 0.7,
+            "p_connect": 0.6,
+            "d1": 0.4,
             "d2": 1.0,
             "f1": 0.0,
             "f2": 0.0,
-            "tau_D1": 0.03,
+            "tau_D1": 0.300,
             "tau_D2": 0.300,
             "tau_F1": 1000,
             "tau_F2": 0.300,
-            "w_e": 0.010,
+            "w_e": 0.015,
             "w_i": 0.00,
             "tau_e": 0.002,      # (6)
-            "tau_i": 0.008,      # (6)
+            "tau_i": 0.010,      # (6)
             "delay": 0
         },
 
         ("afferents", "SOM"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
-            "p_connect": 0.5,
+            "p_connect": 0.6,
             "d1": 1.0,
             "d2": 1.0,
             "f1": 0.7,
             "f2": 0.0,
-            "tau_D1": 0.075,
+            "tau_D1": 0.400,
             "tau_D2": 0.300,
-            "tau_F1": 0.100,
+            "tau_F1": 0.400,
             "tau_F2": 0.300,
             "w_e": 0.002,
             "w_i": 0.00,
             "tau_e": 0.002,      # (6)
-            "tau_i": 0.008,      # (6)
+            "tau_i": 0.010,      # (6)
             "delay": 0
         }
     },
@@ -168,25 +168,25 @@ settings = {
     }
 }
 
-
-""" References
- 1. "Supralinear increase of recurrent inhibition during sparse
-       activity in somatosensory cortex" (2007)
-       Kapfer, Glickfeld, Atallah, Scanziani
- 2. "Synaptic Depression and the Temporal Response Characteristics
-       of V1 Cells" (1998)
-       Chance, Nelson, Abbott
- 3. "The Excitatory Neuronal Network of the C2 Barrel Column in Mouse
-       Primary Somatosensory Cortex" (2008)
-       Lefort, Tomm, Sarria, Peterson
- 4. "Distinct Balance of excitation and inhjibition in an intrareal
-       feedforward and feedback circuit of mouse visual cortex" (2013)
-       Yang, Carrasquillo, Hooks, Nerbonne, Burkhalter
- 5. "Diveristy and overlap of parvalbumin and somatostatin expressing neurons
-       in mouse presubiculum" (2015)
-       Nassar et al.
- 6. "Membrane Properties and the Balance between Excitation and Inhibition
-       Control Gamma-Frequency Oscillations Arising from Feedback Inhibition"
-       (2012)
-       Economo, White
-"""
+#####################################
+# References
+# 1. "Supralinear increase of recurrent inhibition during sparse
+#       activity in somatosensory cortex" (2007)
+#       Kapfer, Glickfeld, Atallah, Scanziani
+# 2. "Synaptic Depression and the Temporal Response Characteristics
+#       of V1 Cells" (1998)
+#       Chance, Nelson, Abbott
+# 3. "The Excitatory Neuronal Network of the C2 Barrel Column in Mouse
+#       Primary Somatosensory Cortex" (2008)
+#       Lefort, Tomm, Sarria, Peterson
+# 4. "Distinct Balance of excitation and inhjibition in an intrareal
+#       feedforward and feedback circuit of mouse visual cortex" (2013)
+#       Yang, Carrasquillo, Hooks, Nerbonne, Burkhalter
+# 5. "Diveristy and overlap of parvalbumin and somatostatin expressing neurons
+#       in mouse presubiculum" (2015)
+#       Nassar et al.
+# 6. "Membrane Properties and the Balance between Excitation and Inhibition
+#       Control Gamma-Frequency Oscillations Arising from Feedback Inhibition"
+#       (2012)
+#       Economo, White
+#
