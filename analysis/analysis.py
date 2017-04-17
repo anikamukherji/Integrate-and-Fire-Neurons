@@ -3,7 +3,7 @@ from brian2tools import *
 import matplotlib.pyplot as plt
 from create_network import create_network
 from chance_abbott_sim_settings import settings
-from run_simulation import * 
+from run_simulation import *
 from create_network_functions import visualise_connectivity
 import dill as pickle
 import math
@@ -16,7 +16,7 @@ import math
 
 def unpickle_net(pickle_file):
     """
-    Unpickle a file and return its contents a mega-dictionary 
+    Unpickle a file and return its contents a mega-dictionary
     of all the monitored states during that run
     """
     with open(pickle_file, 'rb') as open_f:
@@ -59,13 +59,13 @@ def plot_everything(filenames, neuron_index=0):
         # axs[i,1].plot(fs_t_mon/ms, fs_gi_mon, 'blue')
 
         # axs[i,2].plot(som_t_mon/ms, som_v_mon, 'black')
-        axs[i,2].plot(som_t_mon/ms, som_ge_mon, 'red') 
+        axs[i,2].plot(som_t_mon/ms, som_ge_mon, 'red')
         # axs[i,2].plot(som_t_mon/ms, som_gi_mon, 'blue')
     plt.show()
 
 def extract_presynaptic_spikes(filename, neuron_type, neuron_index, net=None):
     """
-    Extract out presynaptic spike times for a specific neuron index 
+    Extract out presynaptic spike times for a specific neuron index
     Pass in an already-run network
     """
     if net == None:
@@ -84,7 +84,7 @@ def extract_presynaptic_spikes(filename, neuron_type, neuron_index, net=None):
     for n, time in zip(a_spikes['i'], a_spikes['t']):
         if n in presyn_indices:
             presyn_spike_times.append(time)
-    
+
     # print(presyn_spike_times)
     return presyn_spike_times
 
@@ -97,7 +97,7 @@ def pulse_ratio(pickle_file, neuron_type, neuron_index, var):
     """
 
     net = unpickle_net(pickle_file)
-    
+
     spike_times = extract_presynaptic_spikes(pickle_file, neuron_type, neuron_index, net)
     # print(spike_times)
     if var == "V":
@@ -110,7 +110,7 @@ def pulse_ratio(pickle_file, neuron_type, neuron_index, var):
     responses = extract_responses(spike_times, mon)
     PPR = [float(x)/float(responses[0]) for x in responses]
     print(PPR)
-    return responses 
+    return responses
 
 def extract_responses(spike_times, mon):
     """
@@ -137,7 +137,7 @@ def extract_responses(spike_times, mon):
         else:
             before = np.mean(np.array(mon[spike_index-10:spike_index+1]))
 
-        # get max value after the spike 
+        # get max value after the spike
         if i+ 1 != len(spike_times):
             next_spike_index = math.floor(spike_times[i+1]*10000)
             after = max(np.array(mon[spike_index:next_spike_index]))
@@ -151,7 +151,7 @@ def extract_responses(spike_times, mon):
 def global_peak_trough_ratio(pickle_file, neuron_type, neuron_index):
     """
     Find global peak to trough ratio by taking difference of min and max
-    value for the second half of the simulation 
+    value for the second half of the simulation
 
     valid neuron_type names = "FS", "SOM", "HVA_PY"
     """
@@ -165,7 +165,7 @@ def global_peak_trough_ratio(pickle_file, neuron_type, neuron_index):
         mon = [x[neuron_index] for x in net['SOM_V_mon']['V']]
     if neuron_type == "HVA_PY":
         mon = [x[neuron_index] for x in net['HVA_PY_V_mon']['V']]
-    
+
     plt.title("{} PPR".format(neuron_type))
     # cut out first half of simulation
     halfway = len(mon)//2
@@ -199,19 +199,25 @@ def average_values(pickle_file, value, neuron_type):
     # print(averages)
     return averages
 
-# global_peak_trough_ratio("../networks/run_0.p", "HVA_PY")
-# global_peak_trough_ratio("../networks/run_0.p", "FS")
-# global_peak_trough_ratio("../networks/run_0.p", "SOM")
-# n = unpickle_net("../networks/run_0.p")
-# average_values("../networks/run_0.p", "V", "FS")
-# pulse_ratio_plot("../networks/run_0_30-03-2017.p", "SOM", 1)
-# plot_everything(["../networks/run_0_30-03-2017.p",
-    # "../networks/run_1_30-03-2017.p",
-    # "../networks/run_2_30-03-2017.p"])
-pulse_ratio("../networks/run_2_30-03-2017.p", "FS",0, "V")
-pulse_ratio("../networks/run_2_30-03-2017.p", "SOM",0, "V")
 
-
-# this function is not all that useful honestly
-
-
+# CAH put this here, could go elsewhere (or nowhere)
+def visualise_connectivity(S):
+    Ns = len(S.source)
+    Nt = len(S.target)
+    figure(figsize=(10, 4))
+    subplot(121)
+    plot(zeros(Ns), arange(Ns), 'ok', ms=10)
+    plot(ones(Nt), arange(Nt), 'ok', ms=10)
+    for i, j in zip(S.i, S.j):
+        plot([0, 1], [i, j], '-k')
+    xticks([0, 1], ['Source', 'Target'])
+    ylabel('Neuron index')
+    xlim(-0.1, 1.1)
+    ylim(-1, max(Ns, Nt))
+    subplot(122)
+    plot(S.i, S.j, 'ok')
+    xlim(-1, Ns)
+    ylim(-1, Nt)
+    xlabel('Source neuron index')
+    ylabel('Target neuron index')
+    show()

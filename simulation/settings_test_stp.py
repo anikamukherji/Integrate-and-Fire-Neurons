@@ -19,7 +19,7 @@
 
 """
 
-from equations import neuron_eqs, synapse_eqs, onspike_eqs, sinusoid_rate
+from equations import synapse_eqs, onspike_eqs
 
 
 settings = {
@@ -65,13 +65,15 @@ settings = {
         "modulation_rate": None,
         "peak_rate": None,
         "spikes_per_second": [1, 10, 50, 100],  # pulse train frequencies
-        "eqs": None
+        "eqs": None,
+        "sim_time": 2
     },
 
     "synapses": {
         ("SOM", "HVA_PY"): {
             "eqs": None,
             "on_spike": None,
+            "p_connect": 0,
             "d1": None,
             "d2": None,
             "f1": None,
@@ -90,6 +92,7 @@ settings = {
         ("FS", "HVA_PY"): {
             "eqs": None,
             "on_spike": None,
+            "p_connect": 0,
             "d1": None,
             "d2": None,
             "f1": None,
@@ -108,33 +111,35 @@ settings = {
         ("afferents", "HVA_PY"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
+            "p_connect": 1,
             "d1": 0.8,
             "d2": 1,
-            "f1": 1,
-            "f2": 1,
-            "tau_D1": 100000,
-            "tau_D2": 100000,
-            "tau_F1": 100000,
-            "tau_F2": 100000,
+            "f1": 0,
+            "f2": 0,
+            "tau_D1": 1000,
+            "tau_D2": 1000,
+            "tau_F1": 1000,
+            "tau_F2": 1000,
             "w_e": 10,
             "w_i": 0,
-            "tau_e": 0.001,
-            "tau_i": 0.001,
+            "tau_e": 0.0001,
+            "tau_i": 0.0001,
             "delay": 0
         },
 
         ("afferents", "FS"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
+            "p_connect": 1,
             "d1": 0.5,
             "d2": 1,
-            "f1": 1,
-            "f2": 1,
-            "tau_D1": 100000,
-            "tau_D2": 100000,
-            "tau_F1": 100000,
-            "tau_F2": 100000,
-            "w_e": 1,
+            "f1": 0,
+            "f2": 0,
+            "tau_D1": 1000,
+            "tau_D2": 1000,
+            "tau_F1": 1000,
+            "tau_F2": 1000,
+            "w_e": 5,
             "w_i": 0,
             "tau_e": 0.001,
             "tau_i": 0.001,
@@ -144,15 +149,16 @@ settings = {
         ("afferents", "SOM"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
-            "d1": None,
-            "d2": None,
-            "f1": None,
-            "f2": None,
-            "tau_D1": 100000,
-            "tau_D2": 100000,
-            "tau_F1": 100000,
-            "tau_F2": 100000,
-            "w_e": 0.5,
+            "p_connect": 1,
+            "d1": 1,
+            "d2": 1,
+            "f1": 2,
+            "f2": 0,
+            "tau_D1": 100,
+            "tau_D2": 100,
+            "tau_F1": 100,
+            "tau_F2": 100,
+            "w_e": 1,
             "w_i": 0,
             "tau_e": 0.001,
             "tau_i": 0.001,

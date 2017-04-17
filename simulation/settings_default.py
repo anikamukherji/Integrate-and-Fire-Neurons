@@ -59,13 +59,15 @@ settings = {
         "modulation_rate": 50,
         "peak_rate": 50,
         "spikes_per_second": 20,
-        "eqs": sinusoid_rate
+        "eqs": sinusoid_rate,
+        "sim_time": 2
     },
 
     "synapses": {
         ("SOM", "HVA_PY"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
+            "p_connect": 1,
             "d1": 0.5,
             "d2": 1.0,
             "f1": 0.0,
@@ -84,6 +86,7 @@ settings = {
         ("FS", "HVA_PY"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
+            "p_connect": 1,
             "d1": 0.4,
             "d2": 1.0,
             "f1": 0.0,
@@ -100,8 +103,9 @@ settings = {
         },
 
         ("afferents", "HVA_PY"): {
-            "eqs":synapse_eqs,
-            "on_spike":onspike_eqs,
+            "eqs": synapse_eqs,
+            "on_spike": onspike_eqs,
+            "p_connect": 0.5,
             "d1": 0.8,
             "d2": 1.0,
             "f1": 0.0,
@@ -120,6 +124,7 @@ settings = {
         ("afferents", "FS"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
+            "p_connect": 0.5,
             "d1": 0.7,
             "d2": 1.0,
             "f1": 0.0,
@@ -138,6 +143,7 @@ settings = {
         ("afferents", "SOM"): {
             "eqs": synapse_eqs,
             "on_spike": onspike_eqs,
+            "p_connect": 0.5,
             "d1": 1.0,
             "d2": 1.0,
             "f1": 0.7,
