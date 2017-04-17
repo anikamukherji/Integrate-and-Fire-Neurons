@@ -1,10 +1,7 @@
 
 from brian2tools import *
+from brian2 import units
 import matplotlib.pyplot as plt
-from simulation.create_network import create_network
-from chance_abbott_sim_settings import settings
-from simulation.run_simulation import * 
-from create_network_functions import visualise_connectivity
 import dill as pickle
 import math
 
@@ -50,16 +47,16 @@ def plot_everything(filenames, neuron_index=0):
         hva_gi_mon = [x[neuron_index] for x in net['HVA_PY_Gi_total_mon']['Gi_total']]
         fs_gi_mon = [x[neuron_index] for x in net['FS_Gi_total_mon']['Gi_total']]
         som_gi_mon = [x[neuron_index] for x in net['SOM_Gi_total_mon']['Gi_total']]
-        # axs[i,0].plot(hva_t_mon/ms, hva_v_mon, 'black')
-        axs[i,0].plot(hva_t_mon/ms, hva_ge_mon, 'red')
-        # axs[i,0].plot(hva_t_mon/ms, hva_gi_mon, 'blue')
+        # axs[i,0].plot(hva_t_mon, hva_v_mon, 'black')
+        axs[i,0].plot(hva_t_mon, hva_ge_mon, 'red')
+        # axs[i,0].plot(hva_t_mon, hva_gi_mon, 'blue')
 
         # axs[i,1].plot(fs_t_mon/ms, fs_v_mon, 'black')
-        axs[i,1].plot(fs_t_mon/ms, fs_ge_mon, 'red')
-        # axs[i,1].plot(fs_t_mon/ms, fs_gi_mon, 'blue')
+        axs[i,1].plot(fs_t_mon, fs_ge_mon, 'red')
+        # axs[i,1].plot(fs_t_mon, fs_gi_mon, 'blue')
 
-        # axs[i,2].plot(som_t_mon/ms, som_v_mon, 'black')
-        axs[i,2].plot(som_t_mon/ms, som_ge_mon, 'red') 
+        # axs[i,2].plot(som_t_mon, som_v_mon, 'black')
+        axs[i,2].plot(som_t_mon, som_ge_mon, 'red') 
         # axs[i,2].plot(som_t_mon/ms, som_gi_mon, 'blue')
     plt.show()
 
@@ -206,8 +203,8 @@ def average_values(pickle_file, value, neuron_type):
 # average_values("../networks/run_0.p", "V", "FS")
 # pulse_ratio_plot("../networks/run_0_30-03-2017.p", "SOM", 1)
 plot_everything(["../networks/run_0_17-04-2017.p",
-    "../networks/run_1-17-04-2017.p",
-    "../networks/run_2-17-04-2017.p"])
+    "../networks/run_1_17-04-2017.p",
+    "../networks/run_2_17-04-2017.p"])
 # pulse_ratio("../networks/run_2_30-03-2017.p", "FS",0, "V")
 # pulse_ratio("../networks/run_2_30-03-2017.p", "SOM",0, "V")
 
