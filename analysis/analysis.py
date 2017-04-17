@@ -1,9 +1,9 @@
 
 from brian2tools import *
 import matplotlib.pyplot as plt
-from create_network import create_network
+from simulation.create_network import create_network
 from chance_abbott_sim_settings import settings
-from run_simulation import * 
+from simulation.run_simulation import * 
 from create_network_functions import visualise_connectivity
 import dill as pickle
 import math
@@ -205,11 +205,11 @@ def average_values(pickle_file, value, neuron_type):
 # n = unpickle_net("../networks/run_0.p")
 # average_values("../networks/run_0.p", "V", "FS")
 # pulse_ratio_plot("../networks/run_0_30-03-2017.p", "SOM", 1)
-# plot_everything(["../networks/run_0_30-03-2017.p",
-    # "../networks/run_1_30-03-2017.p",
-    # "../networks/run_2_30-03-2017.p"])
-pulse_ratio("../networks/run_2_30-03-2017.p", "FS",0, "V")
-pulse_ratio("../networks/run_2_30-03-2017.p", "SOM",0, "V")
+plot_everything(["../networks/run_0_17-04-2017.p",
+    "../networks/run_1-17-04-2017.p",
+    "../networks/run_2-17-04-2017.p"])
+# pulse_ratio("../networks/run_2_30-03-2017.p", "FS",0, "V")
+# pulse_ratio("../networks/run_2_30-03-2017.p", "SOM",0, "V")
 
 
 # this function is not all that useful honestly
