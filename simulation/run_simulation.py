@@ -11,7 +11,7 @@ Wrapper function for easy simulation setup.
 
 # define sim_settings
 # import YYYYYY as sim_settings (YYYYY = sim_settings module name)
-import settings_test_stp as sim_settings
+import settings_default as sim_settings
 
 # define other things here
 sim_length = 0.5  # seconds
