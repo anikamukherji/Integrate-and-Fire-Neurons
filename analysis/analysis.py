@@ -47,16 +47,16 @@ def plot_everything(filenames, neuron_index=0):
         hva_gi_mon = [x[neuron_index] for x in net['HVA_PY_Gi_total_mon']['Gi_total']]
         fs_gi_mon = [x[neuron_index] for x in net['FS_Gi_total_mon']['Gi_total']]
         som_gi_mon = [x[neuron_index] for x in net['SOM_Gi_total_mon']['Gi_total']]
-        # axs[i,0].plot(hva_t_mon, hva_v_mon, 'black')
-        axs[i,0].plot(hva_t_mon, hva_ge_mon, 'red')
+        axs[i,0].plot(hva_t_mon, hva_v_mon, 'black')
+        # axs[i,0].plot(hva_t_mon, hva_ge_mon, 'red')
         # axs[i,0].plot(hva_t_mon, hva_gi_mon, 'blue')
 
-        # axs[i,1].plot(fs_t_mon/ms, fs_v_mon, 'black')
-        axs[i,1].plot(fs_t_mon, fs_ge_mon, 'red')
+        axs[i,1].plot(fs_t_mon, fs_v_mon, 'black')
+        # axs[i,1].plot(fs_t_mon, fs_ge_mon, 'red')
         # axs[i,1].plot(fs_t_mon, fs_gi_mon, 'blue')
 
-        # axs[i,2].plot(som_t_mon, som_v_mon, 'black')
-        axs[i,2].plot(som_t_mon, som_ge_mon, 'red') 
+        axs[i,2].plot(som_t_mon, som_v_mon, 'black')
+        # axs[i,2].plot(som_t_mon, som_ge_mon, 'red') 
         # axs[i,2].plot(som_t_mon/ms, som_gi_mon, 'blue')
     plt.show()
 
