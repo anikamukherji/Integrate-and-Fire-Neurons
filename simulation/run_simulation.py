@@ -1,33 +1,47 @@
 """
 Wrapper function for easy simulation setup.
 
-1) define the variables listed below
-2) call "python3 run_simulation.py" from terminal
+1) Define the settings module
+2) Enter a description
+3) Specify the path to the directory where the data should be saved
+4) Call "python3 run_simulation.py" from terminal
 
 """
-# TODO: remove the data directory from the git repository?
 
-"""  USER DEFINED STUFF  """
+###################################
+# IMPORT THE NECESSARY MODULES    #
+###################################
+from hvasim import run_simulations
 
-# define sim_settings
+#######################################
+# USER-DEFINE: THE SIMULATION SETTINGS
 # import YYYYYY as sim_settings (YYYYY = sim_settings module name)
 import settings_default as sim_settings
 
 # define other things here
 sim_length = 0.5  # seconds
 use_poisson = False
-description = "testing the new simulation codebase"
+
+######################################
+# USER-DEFINE: ENTER A  DESCRIPTION  #
+######################################
+description = """ Using the default settings file to explore the
+dependence of STP on modulation rate for different types of afferent synapses
+(PY->PY, PY->FS, PY->SOM).
+
+The interneurons in the HVA do not contact the PY cells (p_connect=0)
+"""
 
 """  END USER DEFINED STUFF  """
 
 
 
+########################################
+# USER-DEFINE: PATH TO DATA DIRECTORY  #
+########################################
+dat_path = "~/Desktop/Integrate-and-Fire-Neurons/networks"
 
-
-""" don't mess with the stuff below """
-from create_network import run_loops
-
-run_loops(sim_settings.settings,
-          sim_length,
-          description,
-          poisson_on=use_poisson)
+###################################
+# DON'T MESS WITH THE STUFF BELOW #
+###################################
+run_simulations(sim_settings.settings, description, dat_path)

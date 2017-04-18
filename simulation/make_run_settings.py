@@ -8,18 +8,19 @@ The logic is that:
 1) "settings_default" file contains all the current simulation parameters.
 2) "settings_sim_..." files contain the settings for a specific simulation (eg.
     medial areas, lateral area, fast/slow stp etc...)
-3) "run_settings" is a dictionary created at runtime based off the values in the
+3) "run_settings" is a dictionary created at runtime from the values in the
     default_ and settings_sim_ settings files.
 
 Generating the run_settings (run-time) dictionary follows the following
 process:
 1) Make a copy of the "settings_default" dictionary
-2) Load in the desired settings_sim_  dictionary (e.g., "settings_sim_hva_medial.py")
+2) Load in the desired settings_sim_  dictionary
+   (e.g., "settings_sim_hva_medial.py")
 3) Iterate through the default_  dictionary.
-    * throw an error if that value is not defined in the settings_sim_ dict. This ensures
-      that all default params are defined correctly
-    * Any param in settings_sim_ that "is None" gets defined instead by default_ dict
-    * Any param in settings_sim_ that "is not None" gets defined by settings_sim_
+    * throw an error if that value is not defined in the settings_sim_ dict.
+      This ensures that all default params are defined correctly
+    * Any param in settings_sim_ that "is None" gets defined by default_ dict
+    * Any param in settings_sim_ that "is not None" is defined by settings_sim_
     * Any param in settings_sim_ that is a list gets flaged
     * return the run_settings dictionary, and the address of the
       list (for looping)
@@ -49,14 +50,14 @@ def enforce_sim_params(d_def, d_sim, d_run) -> dict:
 
     # use the d_def dict as a template and crawl down it's tree
     for key in d_def.keys():
-        assert key in d_sim.keys(), "ERROR: param in default but not simulation"
+        assert key in d_sim.keys(), "ERROR: param in d_def but not d_sim"
         if type(d_def[key]) is dict:
             d_def[key], d_sim[key], d_run[key] = enforce_sim_params(d_def[key],
                                                                     d_sim[key],
                                                                     d_run[key]
                                                                     )
         elif d_sim[key] is not None:
-            d_run[key] = copy.copy(d_sim[key])  # REVIEW: is shallow copy necessary?
+            d_run[key] = copy.copy(d_sim[key])
     return d_run, d_sim, d_def
 
 

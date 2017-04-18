@@ -6,9 +6,12 @@
    of the model (eg. settings_sim_medial_areas to model PM or AL)
 
 3) For testing situations, name the file settings_test_YYYYY
+
+4) Write a description of the new network in the docstring of the new
+   settings file.
+
 """
 
-from equations import neuron_eqs, synapse_eqs, onspike_eqs, sinusoid_rate
 
 settings = {
     "neurons": {
@@ -49,16 +52,19 @@ settings = {
 
     "afferents": {
         "N": None,
+        "use_poisson": None,
         "modulation_rate": None,
         "peak_rate": None,
         "spikes_per_second": None,
-        "eqs": None
+        "eqs": None,
+        "sim_time": 2
     },
 
     "synapses": {
         ("SOM", "HVA_PY"): {
             "eqs": None,
             "on_spike": None,
+            "p_connect": None,
             "d1": None,
             "d2": None,
             "f1": None,
@@ -77,6 +83,7 @@ settings = {
         ("FS", "HVA_PY"): {
             "eqs": None,
             "on_spike": None,
+            "p_connect": None,
             "d1": None,
             "d2": None,
             "f1": None,
@@ -95,6 +102,7 @@ settings = {
         ("afferents", "HVA_PY"): {
             "eqs": None,
             "on_spike": None,
+            "p_connect": None,
             "d1": None,
             "d2": None,
             "f1": None,
@@ -113,6 +121,7 @@ settings = {
         ("afferents", "FS"): {
             "eqs": None,
             "on_spike": None,
+            "p_connect": None,
             "d1": None,
             "d2": None,
             "f1": None,
@@ -131,6 +140,7 @@ settings = {
         ("afferents", "SOM"): {
             "eqs": None,
             "on_spike": None,
+            "p_connect": None,
             "d1": None,
             "d2": None,
             "f1": None,
